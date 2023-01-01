@@ -4,14 +4,12 @@ using Verse;
 
 namespace TakeYourTools
 {
-    public class ToolProperties : DefModExtension
+    public class TYT_ToolProperties : DefModExtension
     {
 
-        public static readonly ToolProperties defaultValues = new ToolProperties();
+        public static readonly TYT_ToolProperties defaultValues = new TYT_ToolProperties();
 
         public List<StatModifier> baseWorkStatFactors;
-
-        //[NoTranslate]
         public List<string> defaultToolAssignmentTags;
 
     }

@@ -40,8 +40,14 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainCode\ToolThing.cs" />
-    <Compile Include="ModExtensions\ToolProperties.cs" />
+    <Compile Include="DefOfs\TYT_ThingDefOf.cs" />
+    <Compile Include="DefOfs\TYT_StatCategoryDefOf.cs" />
+    <Compile Include="DefOfs\TYT_StatDefOf.cs" />
+    <Compile Include="DefOfs\TYT_ThingCategoryDefOf.cs" />
+    <Compile Include="Harmony\TYT_Patch_ThingDef_SpecialDisplayStats.cs" />
+    <Compile Include="MainCode\TYT_ToolUtility.cs" />
+    <Compile Include="MainCode\TYT_ToolThing.cs" />
+    <Compile Include="ModExtensions\TYT_ToolProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,8 +61,6 @@
   <ItemGroup>
     <Folder Include="AI\" />
     <Folder Include="Alerts\" />
-    <Folder Include="DefOfs\" />
-    <Folder Include="Harmony\" />
     <Folder Include="Stats\" />
     <Folder Include="ToolAssignments\" />
   </ItemGroup>

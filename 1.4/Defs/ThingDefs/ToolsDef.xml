@@ -29,12 +29,12 @@
 			</li>
 		</tools>
 		<modExtensions>
-			<li Class="TakeYourTools.ToolProperties">
+			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<TreeFellingSpeed>1</TreeFellingSpeed>
+					<PlantHarvestYield>1</PlantHarvestYield>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>PlantWorker</li>
+					<li>CutPlant</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>
@@ -67,15 +67,15 @@
 			</li>
 		</tools>
 		<modExtensions>
-			<li Class="TakeYourTools.ToolProperties">
+			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
 					<ConstructionSpeed>1</ConstructionSpeed>
 					<ConstructSuccessChance>1</ConstructSuccessChance>
 					<MiningSpeed>1</MiningSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>Constructor</li>
-					<li>Mining</li>
+					<li>Clean</li>
+					<li>Harvest</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>

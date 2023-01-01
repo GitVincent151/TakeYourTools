@@ -1,0 +1,10 @@
+<Defs>
+
+    <StatCategoryDef>
+        <defName>ToolStatCategoryDef</defName>
+        <label>Tool properties</label>
+        <displayOrder>29</displayOrder>
+        <displayAllByDefault>true</displayAllByDefault>
+    </StatCategoryDef>
+
+</Defs>
