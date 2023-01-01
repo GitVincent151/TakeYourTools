@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "GcE+IyayFBCYRfxiZistN4r7/pLG9Ez0kU2p3eJVtGsuUQk2CRmzI+S8rzrK5Mgs2/fnuRXpYqzMGCTnUEc04w==",
+  "success": true,
+  "projectFilePath": "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\TakeYourTools.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Vincent\\.nuget\\packages\\krafs.rimworld.ref\\1.4.3514-beta\\krafs.rimworld.ref.1.4.3514-beta.nupkg.sha512",
+    "C:\\Users\\Vincent\\.nuget\\packages\\lib.harmony\\2.2.2\\lib.harmony.2.2.2.nupkg.sha512"
+  ],
+  "logs": []
+}

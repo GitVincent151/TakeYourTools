@@ -1,0 +1,15 @@
+XML Key Points
+- Read the Core XML files and other mod XML files to learn. That's it. Nothing better.
+- Ok, other approach. Find a ThingDef similar to what you want and modify it.
+
+C# Key Points
+- "Verse.Thing" (Thing hereafter) is the base of every "thing" on the map. So, "RimWorld.Plant" inherits from it.
+- Thing is instantiated in RimWorld to create an object.
+- Thing contains a "def" of "Verse.ThingDef".
+- "Verse.ThingDef" (ThingDef hereafter) is populated by the XML files and used to create a Thing.
+- Thing is created by ThingMaker.MakeThing(ThingDef def, ThingDef Stuff = null). Generally, it creates a new Thing from the ThingDef def, sets newly created Thing's def to ThingDef, and sets the stuff the new Thing is made of to Stuff. Some items need stuff (ex. steel weapons, granite walls, etc.).
+- If you make a new c# class and want it to be on a ThingDef in your XML, set the '<thingClass>' to namespace.classname.
+
+Ticks and Time
+- A tick is 1/60th of a second so 60 ticks per second (see Wiki-Time).
+- Ticks come in normal, long and rare intervals. So, callback on Things are Tick(), TickLong() and TickRare() (comps have similar methods). A rare interval is 250 normal ticks and a long interval is 2000 normal ticks. Basically, this means things like plants don't bog the game down calling updates. For your c#, use the longest time possible to optimize the game experience.

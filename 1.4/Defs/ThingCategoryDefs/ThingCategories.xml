@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingCategoryDef>
+		<defName>BaseTools</defName>
+		<label>tools</label>
+		<parent>Items</parent>
+	</ThingCategoryDef>
+	
+    <ThingCategoryDef>
+        <defName>BaseTools_Crafted</defName>
+        <label>basic tools</label>
+        <parent>BaseTools</parent>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>BaseTools_Forged</defName>
+        <label>forged tools</label>
+        <parent>BaseTools</parent>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>BaseTools_Machined</defName>
+        <label>machined tools</label>
+        <parent>BaseTools</parent>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>BaseTools_Tailored</defName>
+        <label>tailored tools</label>
+        <parent>BaseTools</parent>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>BaseTools_Components</defName>
+        <label>advanced tools</label>
+        <parent>BaseTools</parent>
+    </ThingCategoryDef>
+
+</Defs>

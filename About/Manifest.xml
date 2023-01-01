@@ -1,0 +1,14 @@
+<Manifest>
+	<identifier>TakeYourTools</identifier>
+	<version>1.4.1</version>
+	<dependencies>
+		<li>Ludeon.RimWorld</li>
+		<li>brrainz.harmony</li>
+	</dependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>brrainz.harmony</li>
+	</loadAfter>
+    <manifestUri>https://rawgit.com/XeoNovaDan/SurvivalTools/master/About/Manifest.xml</manifestUri>
+    <downloadUri>https://github.com/XeoNovaDan/SurvivalTools/releases</downloadUri>
+</Manifest>

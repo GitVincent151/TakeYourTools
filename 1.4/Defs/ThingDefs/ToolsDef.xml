@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- ============================Pillow================================== -->
+	<ThingDef ParentName="BaseTools_Tailored">
+		<defName>Tool_Pillow</defName>
+		<label>pillow</label>
+		<description>Comfy and soft, helps you get a good night sleep.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/Tools/Pillow</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>30</costStuffCount>
+		<statBases>
+			<WorkToMake>1500</WorkToMake>
+			<Mass>0.5</Mass>
+		</statBases>
+		<equippedStatOffsets>
+			<MentalBreakThreshold>-0.04</MentalBreakThreshold>
+			<ImmunityGainSpeed>0.02</ImmunityGainSpeed>
+		</equippedStatOffsets>
+		<tools>
+			<li>
+				<label>weight</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>1</power>
+				<cooldownTime>3</cooldownTime>
+			</li>
+		</tools>
+		<modExtensions>
+			<li Class="TakeYourTools.ToolProperties">
+				<baseWorkStatFactors>
+					<TreeFellingSpeed>1</TreeFellingSpeed>
+				</baseWorkStatFactors>
+				<defaultToolAssignmentTags>
+					<li>PlantWorker</li>
+				</defaultToolAssignmentTags>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	<!-- ============================Blanket================================== -->
+	<ThingDef ParentName="BaseTools_Tailored">
+		<defName>Tool_Blanket</defName>
+		<label>blanket</label>
+		<description>A comfy security blanket. Keeps you warm, and keeps you happy.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/Tools/Blanket</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>100</costStuffCount>
+		<statBases>
+			<WorkToMake>1000</WorkToMake>
+			<Mass>0.5</Mass>
+		</statBases>
+		<equippedStatOffsets>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+		</equippedStatOffsets>
+		<tools>
+			<li>
+				<label>sheet</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<cooldownTime>2</cooldownTime>
+				<power>1</power>
+			</li>
+		</tools>
+		<modExtensions>
+			<li Class="TakeYourTools.ToolProperties">
+				<baseWorkStatFactors>
+					<ConstructionSpeed>1</ConstructionSpeed>
+					<ConstructSuccessChance>1</ConstructSuccessChance>
+					<MiningSpeed>1</MiningSpeed>
+				</baseWorkStatFactors>
+				<defaultToolAssignmentTags>
+					<li>Constructor</li>
+					<li>Mining</li>
+				</defaultToolAssignmentTags>
+			</li>
+		</modExtensions>
+	</ThingDef>
+</Defs>

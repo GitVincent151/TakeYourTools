@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Take You Tools</name>
+	<author>Captain Muscles (Nathan Harbour), GitVincent151</author>
+	<url>https://ludeon.com/forums/index.php?topic=29503.0</url>
+	<description>Do your pawns always have the right tool for the job? Then why the hell aren't they using them? This mod will make them do that.</description>
+	<packageId>GitVincent151.TakeYourTool</packageId>
+	<supportedVersions>
+        <li>1.4</li>
+    </supportedVersions>
+</ModMetaData>

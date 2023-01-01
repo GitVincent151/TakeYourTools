@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "restore": {
+    "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\TakeYourTools.csproj": {}
+  },
+  "projects": {
+    "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\TakeYourTools.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\TakeYourTools.csproj",
+        "projectName": "TakeYourTools",
+        "projectPath": "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\TakeYourTools.csproj",
+        "packagesPath": "C:\\Users\\Vincent\\.nuget\\packages\\",
+        "outputPath": "K:\\Jeux\\Steam\\steamapps\\common\\RimWorld\\Mods\\TakeYourTools\\Source\\TakeYourTools\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\Vincent\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Krafs.Rimworld.Ref": {
+              "target": "Package",
+              "version": "[1.4.3514-beta, )"
+            },
+            "Lib.Harmony": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
