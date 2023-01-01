@@ -1,5 +1,5 @@
+K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\1.4\Assemblies\TakeYourTools.dll
 K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\Source\TakeYourTools\obj\Debug\TakeYourTools.csproj.AssemblyReference.cache
 K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\Source\TakeYourTools\obj\Debug\TakeYourTools.csproj.CoreCompileInputs.cache
-K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\1.4\Assemblies\TakeYourTools.dll
 K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\Source\TakeYourTools\obj\Debug\TakeYourTools.csproj.CopyComplete
 K:\Jeux\Steam\steamapps\common\RimWorld\Mods\TakeYourTools\Source\TakeYourTools\obj\Debug\TakeYourTools.dll

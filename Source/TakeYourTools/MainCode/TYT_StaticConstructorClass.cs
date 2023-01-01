@@ -1,42 +1,49 @@
 ﻿using RimWorld;
+using SurvivalTools;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
 
-namespace SurvivalTools
+namespace TakeYourTools
 {
 
     [StaticConstructorOnStartup]
-    public static class StaticConstructorClass
+    public static class TYT_StaticConstructorClass
     {
 
-        static StaticConstructorClass()
+        static TYT_StaticConstructorClass()
         {
+            /*
             // Add validator to ThingSetMakerDef
-            ST_ThingSetMakerDefOf.MapGen_AncientRuinsSurvivalTools.root.fixedParams.validator = (ThingDef t) =>
-            t.IsWithinCategory(ST_ThingCategoryDefOf.SurvivalToolsNeolithic);
+            Log.Message($"TYT: Add validator to ThingSetMakerDef");
+            TYT_ThingSetMakerDefOf.MapGen_AncientRuinsTools.root.fixedParams.validator = (ThingDef t) => t.IsWithinCategory(TYT_ThingCategoryDefOf.BaseTools_Crafted);
+            Log.Message($"TYT: Added validator to ThingSetMakerDef");
+            */
 
+            /*
             if (ModCompatibilityCheck.MendAndRecycle)
             {
                 ResolveMendAndRecycleRecipes();
             }
+            */
 
-            ResolveSmeltingRecipeUsers();
+            //ResolveSmeltingRecipeUsers();
             // CheckStuffForStuffPropsTool();
 
-            // Add SurvivalToolAssignmentTracker to all appropriate pawns
+            // Add ToolAssignmentTracker to all appropriate pawns
             foreach (ThingDef tDef in DefDatabase<ThingDef>.AllDefs.Where(t => t.race?.Humanlike == true))
             {
                 if (tDef.comps == null)
                 {
                     tDef.comps = new List<CompProperties>();
                 }
-
-                tDef.comps.Add(new CompProperties(typeof(Pawn_SurvivalToolAssignmentTracker)));
+                Log.Message($"TYT: Add ToolAssignmentTracker to all appropriate pawns");
+                tDef.comps.Add(new CompProperties(typeof(TYT_JobToolAssignmentTracker)));
             }
         }
 
+        /*
         private static void ResolveMendAndRecycleRecipes()
         {
             bool categoryMatch = false;
@@ -59,7 +66,8 @@ namespace SurvivalTools
 
             }
         }
-
+        */
+        /*
         private static void ResolveSmeltingRecipeUsers()
         {
             foreach (ThingDef benchDef in DefDatabase<ThingDef>.AllDefs.Where(t => t.IsWorkTable))
@@ -78,7 +86,8 @@ namespace SurvivalTools
                 }
             }
         }
-
+        */
+        /*
         private static void CheckStuffForStuffPropsTool()
         {
             StringBuilder stuffBuilder = new StringBuilder();
@@ -140,7 +149,7 @@ namespace SurvivalTools
             stuffBuilder.Append(noPropsBuilder);
             Log.Message(stuffBuilder.ToString());
         }
-
+        */
     }
 
 

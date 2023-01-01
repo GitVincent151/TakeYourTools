@@ -14,14 +14,27 @@ namespace TakeYourTools
 {
     public class TYT_ToolThing : ThingWithComps
     {
-        #region Properties class TYT_ToolThing
+        #region Properties
+        public Pawn HoldingPawn
+        {
+            get
+            {
+                if (ParentHolder is Pawn_EquipmentTracker eq)
+                    return eq.pawn;
+                if (ParentHolder is Pawn_InventoryTracker inv)
+                    return inv.pawn;
+                return null;
+            }
+        }
+        public bool InUse =>
+            HoldingPawn != null && HoldingPawn.CanUseTools() && HoldingPawn.CanUseTools(def) &&
+            TYT_ToolUtility.BestToolsFor(HoldingPawn).Contains(this);
         #endregion
 
-        #region Constructor class TYT_ToolThing
+        #region Constructor
         #endregion
 
-
-        #region Properties class TYT_ToolThing
+        #region Properties
         /// <summary>
         /// WorkStatFactors: list of stat modifiers
         /// </summary>
@@ -68,6 +81,7 @@ namespace TakeYourTools
                     modifier.value.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor),
                     TYT_ToolUtility.GetToolOverrideReportText(this, modifier.stat), 1);
             }
+            Log.Message($"TYT: SpecialDisplayStats_out");
 
         }
         #endregion

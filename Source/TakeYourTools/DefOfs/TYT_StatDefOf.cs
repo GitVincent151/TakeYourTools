@@ -10,5 +10,9 @@ namespace TakeYourTools
         public static StatDef PlantHarvestYield;
         public static StatDef ConstructionSpeed;
         public static StatDef ConstructSuccessChance;
+
+        // Pawn
+        public static StatDef ToolCarryCapacity;
+
     }
 }

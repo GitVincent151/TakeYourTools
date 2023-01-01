@@ -1,10 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-
-    <StatCategoryDef>
-        <defName>ToolStatCategoryDef</defName>
-        <label>Tool properties</label>
-        <displayOrder>29</displayOrder>
-        <displayAllByDefault>true</displayAllByDefault>
-    </StatCategoryDef>
-
+	<StatCategoryDef>
+		<defName>ToolStatCategoryDef</defName>
+		<label>Tool properties</label>
+		<displayOrder>29</displayOrder>
+		<displayAllByDefault>true</displayAllByDefault>
+	</StatCategoryDef>
 </Defs>
