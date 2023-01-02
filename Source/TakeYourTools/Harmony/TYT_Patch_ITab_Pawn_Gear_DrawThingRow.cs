@@ -15,6 +15,7 @@ namespace TakeYourTools
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
+            Log.Message($"TYT: TYT_Patch_ITab_Pawn_Gear_DrawThingRow - Transpiler");
             List<CodeInstruction> instructionList = instructions.ToList();
 
             bool done = false;
@@ -41,11 +42,12 @@ namespace TakeYourTools
 
         public static void AdjustDisplayedLabel(ref string originalLabel, Thing thing, Pawn pawn)
         {
+            Log.Message($"TYT: TYT_Patch_ITab_Pawn_Gear_DrawThingRow - AdjustDisplayedLabel"); 
             if (thing is TYT_ToolThing tool)
             {
                 Log.Message($"TYT: AdjustDisplayedLabel {tool}");
                 // Forced
-                if (pawn.GetComp<TYT_JobToolAssignmentTracker>() is TYT_JobToolAssignmentTracker jobToolAssignmentTracker && jobToolAssignmentTracker.forcedHandler.IsForced(tool))
+                if (pawn.GetComp<TYT_PawnToolAssignmentTracker>() is TYT_PawnToolAssignmentTracker jobToolAssignmentTracker && jobToolAssignmentTracker.forcedHandler.IsForced(tool))
                     originalLabel += $", {"ApparelForcedLower".Translate()}";
                 /* Vincent
                 // In use

@@ -14,6 +14,7 @@ namespace TakeYourTools
 
         public override string ExplanationPart(StatRequest req)
         {
+            Log.Message($"TYT: TYT_StatTool - ExplanationPart");
             // The AI will cheat this system for now until tool generation gets figured out
             return req.Thing is Pawn pawn && pawn.CanUseTools()
                 ? pawn.HasToolFor(parentStat, out TYT_ToolThing tool, out float statFactor)
@@ -24,6 +25,7 @@ namespace TakeYourTools
 
         public override void TransformValue(StatRequest req, ref float val)
         {
+            Log.Message($"TYT: TYT_StatTool - TransformValue"); 
             if (req.Thing is Pawn pawn && pawn.CanUseTools())
             {
                 if (pawn.HasToolFor(parentStat, out _, out float statFactor))

@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
@@ -15,6 +16,7 @@ namespace TakeYourTools
     public class TYT_ToolThing : ThingWithComps
     {
         #region Properties
+        public int workTicksDone = 0;
         public Pawn HoldingPawn
         {
             get
@@ -70,10 +72,12 @@ namespace TakeYourTools
         }
         #endregion
 
-        #region Methods class TYT_ToolThing
+        #region Methods
+        public int WorkTicksToDegrade => Mathf.FloorToInt((this.GetStatValue(TYT_StatDefOf.ToolEstimatedLifespan) * GenDate.TicksPerDay) / MaxHitPoints);
+
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
-            Log.Message($"TYT: SpecialDisplayStats");
+            Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats");
             foreach (StatModifier modifier in WorkStatFactors)
             {
                 yield return new StatDrawEntry(TYT_StatCategoryDefOf.ToolStatCategoryDef,
@@ -81,8 +85,13 @@ namespace TakeYourTools
                     modifier.value.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor),
                     TYT_ToolUtility.GetToolOverrideReportText(this, modifier.stat), 1);
             }
-            Log.Message($"TYT: SpecialDisplayStats_out");
+            Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats_out");
 
+        }
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref workTicksDone, "workTicksDone", 0);
         }
         #endregion
     }

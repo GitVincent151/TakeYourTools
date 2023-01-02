@@ -1,6 +1,6 @@
 ﻿using RimWorld;
 
-namespace SurvivalTools
+namespace TakeYourTools
 {
     [DefOf]
     public static class TYT_ThingSetMakerDefOf

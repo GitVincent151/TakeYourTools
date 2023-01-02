@@ -35,6 +35,8 @@ namespace TakeYourTools
         }
         private void GenerateStartingJobToolAssignments()
         {
+
+            Log.Message($"TYT: TYT_JobToolAssignmentDatabase - GenerateStartingJobToolAssignments");
             /*
             TYT_JobToolAssignment staAnything = MakeNewJobToolAssignment();
             staAnything.label = "Tool Assignment is anything".Translate();
@@ -60,6 +62,7 @@ namespace TakeYourTools
                 {
                     foreach (string toolAssignmentTags in toolProperties.defaultToolAssignmentTags)
                     {
+                        Log.Message($"TYT: TYT_JobToolAssignmentDatabase - GenerateStartingJobToolAssignments for defaultToolAssignmentTags {toolAssignmentTags}");
                         TYT_JobToolAssignment jobToolAssignment = MakeNewJobToolAssignment();
                         jobToolAssignment.label = toolAssignmentTags.Translate();
                         jobToolAssignment.filter.SetAllow(tDef, true);
@@ -82,6 +85,7 @@ namespace TakeYourTools
         }
         public TYT_JobToolAssignment MakeNewJobToolAssignment()
         {
+            Log.Message($"TYT: TYT_JobToolAssignment - MakeNewJobToolAssignment");
             int uniqueId = JobToolAssignments.Any() ? JobToolAssignments.Max(a => a.uniqueId) + 1 : 1;
             TYT_JobToolAssignment jobToolAssignment = new TYT_JobToolAssignment(uniqueId, $"{"TYT_JobToolAssignment".Translate()} {uniqueId}");
             jobToolAssignment.filter.SetAllow(TYT_ThingCategoryDefOf.BaseTools, true);
@@ -97,14 +101,14 @@ namespace TakeYourTools
 
         public AcceptanceReport TryDelete(TYT_JobToolAssignment pawnToolAssignment)
         {
-
+            Log.Message($"TYT: TYT_JobToolAssignment - TryDelete");
             foreach (Pawn pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive)
-                if (pawn.TryGetComp<TYT_JobToolAssignmentTracker>()?.CurrentJobToolAssignment == pawnToolAssignment)
+                if (pawn.TryGetComp<TYT_PawnToolAssignmentTracker>()?.GetCurrentJobToolAssignment() == pawnToolAssignment)
                     return new AcceptanceReport("JobToolAssignmentInUse".Translate(pawn));
             foreach (Pawn pawn2 in PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead)
-                if (pawn2.TryGetComp<TYT_JobToolAssignmentTracker>() is TYT_JobToolAssignmentTracker pawnToolAssignmentTracker &&
-                    pawnToolAssignmentTracker.CurrentJobToolAssignment == pawnToolAssignment)
-                    pawnToolAssignmentTracker.CurrentJobToolAssignment = null;
+                if (pawn2.TryGetComp<TYT_PawnToolAssignmentTracker>() is TYT_PawnToolAssignmentTracker pawnToolAssignmentTracker &&
+                    pawnToolAssignmentTracker.GetCurrentJobToolAssignment() == pawnToolAssignment)
+                    pawnToolAssignmentTracker.SetCurrentJobToolAssignment(null);
             JobToolAssignments.Remove(pawnToolAssignment);
             return AcceptanceReport.WasAccepted;
         }

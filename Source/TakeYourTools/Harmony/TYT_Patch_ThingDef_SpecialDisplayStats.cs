@@ -13,6 +13,7 @@ namespace TakeYourTools
 
         public static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> __result, ThingDef __instance, StatRequest req)
         {
+            Log.Message($"TYT: TYT_Patch_ThingDef_SpecialDisplayStats - Postfix"); 
             foreach (StatDrawEntry r in __result)
             {
                 yield return r;

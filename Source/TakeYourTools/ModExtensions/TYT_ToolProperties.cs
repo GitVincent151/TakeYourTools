@@ -11,6 +11,8 @@ namespace TakeYourTools
 
         public List<StatModifier> baseWorkStatFactors;
         public List<string> defaultToolAssignmentTags;
+        public float wearFactorMultiplier = 1f;
+        public float toolWearFactor = 1f;
 
     }
 }

@@ -14,6 +14,7 @@ namespace TakeYourTools
 
         public static void Postfix(Toil __result, TargetIndex ind)
         {
+            Log.Message($"TYT: TYT_Patch_Toils_Haul_TakeToInventory - Postfix");
             Action initAction = __result.initAction;
             __result.initAction = () =>
             {
@@ -22,7 +23,7 @@ namespace TakeYourTools
                 Thing thing = actor.CurJob.GetTarget(ind).Thing;
                 if (thing is TYT_ToolThing && actor.CanUseTools() && actor.inventory.Contains(thing))
                     if (actor.CurJob.playerForced)
-                        actor.GetComp<TYT_JobToolAssignmentTracker>().forcedHandler.SetForced(thing, true);
+                        actor.GetComp<TYT_PawnToolAssignmentTracker>().forcedHandler.SetForced(thing, true);
             };
         }
 

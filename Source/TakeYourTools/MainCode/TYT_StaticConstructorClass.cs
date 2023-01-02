@@ -1,5 +1,4 @@
 ﻿using RimWorld;
-using SurvivalTools;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +11,12 @@ namespace TakeYourTools
     public static class TYT_StaticConstructorClass
     {
 
+        /// <summary>
+        /// Initialization of the mod (static class), PawnDef will get an instance of the class TYT_JobToolAssignmentTracker
+        /// </summary>
         static TYT_StaticConstructorClass()
         {
+            Log.Message($"TYT: TYT_StaticConstructor - MOD STARTED - HELLO ALL!");
             /*
             // Add validator to ThingSetMakerDef
             Log.Message($"TYT: Add validator to ThingSetMakerDef");
@@ -36,10 +39,11 @@ namespace TakeYourTools
             {
                 if (tDef.comps == null)
                 {
+                    Log.Message($"TYT: TYT_StaticConstructor - Initialize the list of properties for components");
                     tDef.comps = new List<CompProperties>();
                 }
-                Log.Message($"TYT: Add ToolAssignmentTracker to all appropriate pawns");
-                tDef.comps.Add(new CompProperties(typeof(TYT_JobToolAssignmentTracker)));
+                Log.Message($"TYT: TYT_StaticConstructor - Add ToolAssignmentTracker to {tDef.defName}");
+                tDef.comps.Add(new CompProperties(typeof(TYT_PawnToolAssignmentTracker)));
             }
         }
 

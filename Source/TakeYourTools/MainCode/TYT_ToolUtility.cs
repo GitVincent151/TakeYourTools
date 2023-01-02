@@ -1,11 +1,11 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
-using SurvivalTools;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
 using Verse.AI;
+using static UnityEngine.Random;
 
 namespace TakeYourTools
 {
@@ -13,10 +13,24 @@ namespace TakeYourTools
     public static class TYT_ToolUtility
     {
 
-        public static List<StatDef> ToolStats { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.RequiresSurvivalTool()).ToList();
-
-        public static bool RequiresSurvivalTool(this StatDef stat)
+        public static List<StatDef> ToolStats { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatsForTool()).ToList();
+        //public static List<WorkGiverDef> SurvivalToolWorkGivers { get; } = DefDatabase<WorkGiverDef>.AllDefsListForReading.Where(w => w.HasModExtension<WorkGiverExtension>()).ToList();
+        public static bool StatsForTool(this StatDef stat)
         {
+            Log.Message($"TYT: TYT_ToolUtility - StatsForTool StatDef {stat.ToStringSafe()}");
+            if (!stat.parts.NullOrEmpty())
+                foreach (StatPart part in stat.parts)
+                {
+                    
+                    Log.Message($"TYT: TYT_ToolUtility - StatsForTool stat.parts {part.GetType().FullName}"); 
+                    if (part?.GetType() == typeof(TYT_StatDefOf))
+                    {
+                        Log.Message($"TYT: TYT_ToolUtility - StatsForTool found TYT_StatDefOf {part.GetType().FullName}");
+                        return true;
+                    }
+                        
+                }
+            return false;
             /*
             if (stat.category.defName == "PawnWork")
                 return true;
@@ -26,8 +40,9 @@ namespace TakeYourTools
                 foreach (StatPart part in stat.parts)
                     if (part?.GetType() == typeof(statDef))
                         return true;
-            */
             return false;
+            */
+
         }
         
 
@@ -39,7 +54,7 @@ namespace TakeYourTools
         /// <returns>True is Def is a tool</returns>
         public static bool IsTool(this BuildableDef def, out TYT_ToolProperties toolProps)
         {
-            Log.Message($"IsTool");
+            Log.Message($"TYT: TYT_ToolUtility - IsTool");
             toolProps = def.GetModExtension<TYT_ToolProperties>();
             return def.IsTool();
         }
@@ -54,7 +69,7 @@ namespace TakeYourTools
         /// <returns>String with the report</returns>
         public static string GetToolOverrideReportText(TYT_ToolThing tool, StatDef stat)
         {
-            Log.Message($"TYT: GetToolOverrideReportText");
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText");
             List<StatModifier> statFactorList = tool.WorkStatFactors.ToList();
             //StuffPropsTool stuffPropsTool = tool.Stuff?.GetModExtension<StuffPropsTool>();
 
@@ -65,9 +80,9 @@ namespace TakeYourTools
             builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
 
             builder.AppendLine();
-            /*builder.AppendLine(TYT_StatDefOf.ToolEffectivenessFactor.LabelCap + ": " +
+            builder.AppendLine(TYT_StatDefOf.ToolEffectivenessFactor.LabelCap + ": " +
                 tool.GetStatValue(TYT_StatDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-            */
+            
             /*if (stuffPropsTool != null && stuffPropsTool.toolStatFactors.GetStatFactorFromList(stat) != 1f)
             {
                 builder.AppendLine();
@@ -89,11 +104,11 @@ namespace TakeYourTools
             pawn.RaceProps.intelligence >= Intelligence.ToolUser && pawn.Faction == Faction.OfPlayer && (pawn.equipment != null || pawn.inventory != null) && pawn.TraderKind == null;
         public static bool CanUseTools(this Pawn pawn, ThingDef def)
         {
-            Log.Message($"CanUseTools"); 
+            Log.Message($"TYT: TYT_ToolUtility - CanUseTools"); 
             TYT_ToolProperties toolProperties = def.GetModExtension<TYT_ToolProperties>();
             if (toolProperties == null)
             {
-                Log.Error($"Tried to check if {def} is a usable tool but has null tool properties");
+                Log.Error($"TYT: TYT_ToolUtility - Tried to check if {def} is a usable tool but has null tool properties");
                 return false;
             }
             foreach (StatModifier modifier in toolProperties.baseWorkStatFactors)
@@ -109,7 +124,7 @@ namespace TakeYourTools
         /// <returns>return the toolThing</returns>
         public static IEnumerable<TYT_ToolThing> BestToolsFor(Pawn pawn)
         {
-            Log.Message($"BestToolsFor"); 
+            Log.Message($"TYT: TYT_ToolUtility - BestToolsFor"); 
             foreach (StatDef stat in ToolStats)
             {
                 TYT_ToolThing tool = pawn.GetBestTool(stat);
@@ -121,6 +136,7 @@ namespace TakeYourTools
         }
         public static TYT_ToolThing GetBestTool(this Pawn pawn, StatDef stat)
         {
+            Log.Message($"TYT: TYT_ToolUtility - GetBestTool"); 
             if (!pawn.CanUseTools())
                 return null;
 
@@ -158,12 +174,23 @@ namespace TakeYourTools
         public static bool HasToolFor(this Pawn pawn, StatDef stat) => pawn.GetBestTool(stat) != null;
         public static bool HasToolFor(this Pawn pawn, StatDef stat, out TYT_ToolThing tool, out float statFactor)
         {
+            Log.Message($"TYT: TYT_ToolUtility - HasToolFor");
             tool = pawn.GetBestTool(stat);
             statFactor = tool?.WorkStatFactors.ToList().GetStatFactorFromList(stat) ?? -1f;
             return tool != null;
         }
         public static IEnumerable<Thing> GetHeldTools(this Pawn pawn) => pawn.inventory?.innerContainer.Where(t => t.def.IsTool());
 
+        public static bool CanRemoveExcessTools(this Pawn pawn) => !pawn.Drafted && !pawn.IsFormingCaravan() && !pawn.IsCaravanMember() && pawn.CurJobDef?.casualInterruptible != false && !pawn.IsBurning() && !(pawn.carryTracker?.CarriedThing is TYT_ToolThing);
+        /*
+        public static bool CanRemoveExcessTools(this Pawn pawn) => !pawn.Drafted && !pawn.IsWashing() && !pawn.IsFormingCaravan() && !pawn.IsCaravanMember() && pawn.CurJobDef?.casualInterruptible != false && !pawn.IsBurning() && !(pawn.carryTracker?.CarriedThing is TYT_ToolThing);
+        private static bool IsWashing(this Pawn pawn)
+        {
+            if (!ModCompatibilityCheck.DubsBadHygiene)
+                return false;
+            return pawn.health.hediffSet.HasHediff(DefDatabase<HediffDef>.GetNamed("Washing"));
+        }
+        */
 
     }
 }

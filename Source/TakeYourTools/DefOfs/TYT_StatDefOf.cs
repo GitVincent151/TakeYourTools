@@ -6,13 +6,17 @@ namespace TakeYourTools
     public static class TYT_StatDefOf
     {
 
-        // baseWorkStatFactors
+        // BaseWorkStatFactors
         public static StatDef PlantHarvestYield;
         public static StatDef ConstructionSpeed;
         public static StatDef ConstructSuccessChance;
 
-        // Pawn
+        // PawnWorkStatFactors
         public static StatDef ToolCarryCapacity;
+
+        // ToolsStatFactors
+        public static StatDef ToolEstimatedLifespan;
+        public static StatDef ToolEffectivenessFactor;
 
     }
 }

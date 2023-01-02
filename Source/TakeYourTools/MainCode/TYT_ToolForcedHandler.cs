@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using Verse;
+using static HarmonyLib.Code;
 
 namespace TakeYourTools
 {
     public class TYT_ToolForcedHandler : IExposable
     {
-        #region Properties class TYT_ToolForcedHandler
+        #region Properties
         private List<Thing> forcedTools = new List<Thing>(); //List of tools forced
-        public List<Thing> ForcedTools => forcedTools; //Pointer on the list
+        //public List<Thing> ForcedTools => forcedTools; //Pointer on the list
         #endregion
 
-        #region Methods class TYT_ToolForcedHandler
+        #region Methods
         public void SetForced(Thing tool, bool forced)
         {
+            Log.Message($"TYT: TYT_ToolForcedHandler - SetForced {forced}");
             if (forced && !forcedTools.Contains(tool))
                 forcedTools.Add(tool);
             else if (!forced && forcedTools.Contains(tool))
@@ -24,11 +26,12 @@ namespace TakeYourTools
         {
             if (tool.Destroyed)
             {
-                Log.Error($"Tool was forced while Destroyed: {tool}");
+                Log.Message($"TYT: TYT_ToolForcedHandler - Tool was forced while Destroyed: {tool}");
                 if (forcedTools.Contains(tool))
                     forcedTools.Remove(tool);
                 return false;
             }
+            Log.Message($"TYT: TYT_ToolForcedHandler - Tool forced status");
             return forcedTools.Contains(tool);
         }
         public bool AllowedToAutomaticallyDrop(Thing tool) => !IsForced(tool);
