@@ -7,5 +7,7 @@ namespace TakeYourTools
     {
 
         public static StatCategoryDef ToolStatCategoryDef;
+
+
     }
 }

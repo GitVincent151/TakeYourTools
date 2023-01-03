@@ -29,18 +29,7 @@ namespace TakeYourTools
                         modifier.value.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor), modifier.stat.description, 1);
                 }
             }
-            /*
-            // Stuff
-            if (__instance.IsStuff && __instance.GetModExtension<StuffPropsTool>() is StuffPropsTool sPropsTool)
-            {
-                foreach (StatModifier modifier in sPropsTool.toolStatFactors)
-                {
-                    yield return new StatDrawEntry(ST_StatCategoryDefOf.SurvivalToolMaterial,
-                        modifier.stat.LabelCap,
-                        modifier.value.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor), modifier.stat.description, 1);
-                }
-            }
-            */
+            
         }
 
     }
