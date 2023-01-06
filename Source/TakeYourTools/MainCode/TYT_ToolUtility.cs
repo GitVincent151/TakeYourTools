@@ -54,22 +54,38 @@ namespace TakeYourTools
         public static string GetToolOverrideReportText(TYT_ToolThing tool, StatDef stat)
         {
             TYT_StuffProps stuffProps = tool.Stuff?.GetModExtension<TYT_StuffProps>();
-
+            float finalValue = 0f;
+            float value = 0f;
             StringBuilder builder = new StringBuilder();
+
+            // Description
             builder.AppendLine(stat.description);
-
             builder.AppendLine();
-            float value = tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat);
-            Log.Message($"TYT: TYT_ToolUtility - GetStuffOverrideReportText Value = {value.ToString()}");
-            builder.AppendLine(tool.def.LabelCap + ": " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-
             builder.AppendLine();
-            float toolEffectivenessFactor = tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
-            Log.Message($"TYT: TYT_ToolUtility - GetStuffOverrideReportText Value = {toolEffectivenessFactor.ToString()}");
-            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + toolEffectivenessFactor.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
 
+            // Stat
+            value = tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat);
+            finalValue = value;
+            builder.AppendLine(stat.LabelForFullStatListCap + " (" + tool.def.LabelCap + "): " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+
+            // Tool quality factor
             builder.AppendLine();
-            float finalValue = value * toolEffectivenessFactor;
+            value = tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
+            finalValue *= value;
+            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+
+            // Stuff wear factor
+            builder.AppendLine();
+            if (stuffProps != null)
+            {
+                value = stuffProps.wearFactorMultiplier;
+                finalValue *= value; 
+                builder.AppendLine("Stuff".Translate() + " (" + tool.Stuff.LabelCap + "): " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            }
+
+            // Final value
+            builder.AppendLine();
+            builder.AppendLine();
             builder.AppendLine("StatsReport_FinalValue".Translate() + ": " + finalValue.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
             return builder.ToString();
         }
