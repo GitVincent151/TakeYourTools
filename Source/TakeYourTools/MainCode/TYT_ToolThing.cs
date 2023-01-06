@@ -17,7 +17,22 @@ namespace TakeYourTools
     public class TYT_ToolThing : ThingWithComps
     {
         #region Properties
+        /// <summary>
+        /// GetModExtension
+        /// </summary>
+        public List<StatModifier> BaseWorkStatFactors => this.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors;
+        public List<String> DefaultToolAssignmentTags => this.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
+        public float ToolWearFactor => this.def.GetModExtension<TYT_ToolProperties>().toolWearFactor;
+
+        /// <summary>
+        ///  ToolDegradation
+        /// </summary>
         public int workTicksDone = 0;
+        public int WorkTicksToDegrade => Mathf.FloorToInt((this.GetStatValue(TYT_StatToolsDefOf.StatEstimatedLifespan) * GenDate.TicksPerDay) / MaxHitPoints);
+
+        /// <summary>
+        /// Pawn holding the tool
+        /// </summary>
         public Pawn HoldingPawn
         {
             get
@@ -29,6 +44,10 @@ namespace TakeYourTools
                 return null;
             }
         }
+
+        /// <summary>
+        /// Tool cab be used & BestTool
+        /// </summary>
         public bool InUse
         {
             get
@@ -39,17 +58,13 @@ namespace TakeYourTools
                        && TYT_ToolUtility.BestToolsFor(HoldingPawn).Contains(this);
             }
         }
-        public int WorkTicksToDegrade =>
-           Mathf.FloorToInt((this.GetStatValue(TYT_StatToolsDefOf.ToolEstimatedLifespan) * GenDate.TicksPerDay) / MaxHitPoints);
 
-        #endregion
 
-        #region Constructor
         #endregion
 
         #region Properties
         /// <summary>
-        /// Get baseWorkStatFactors according to wearFactorMultiplier 
+        /// Change the WorkStatFactors according to StatQualityFactor and StatWearFactor
         /// </summary>
         public IEnumerable<StatModifier> WorkStatFactors
         {
@@ -59,7 +74,7 @@ namespace TakeYourTools
                 {
                     Log.Message($"TYT: WorkStatFactors-->{modifier.stat},{modifier.value}");
 
-                    float newFactor = this.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
+                    float newFactor = this.GetStatValue(TYT_StatToolsDefOf.StatQualityFactor);
                     Log.Message($"TYT: WorkStatFactors---> ToolEffectivenessFactor-->{newFactor.ToString()}");
 
                     Log.Message($"TYT: WorkStatFactors-->{modifier.stat},{modifier.value * newFactor}");
@@ -71,21 +86,7 @@ namespace TakeYourTools
                 }
             }
         }
-        /// <summary>
-        /// DefaultToolAssignmentTags: list of impacted jobs
-        /// </summary>
-        public IEnumerable<string> DefaultToolAssignmentTags
-        {
-            get
-            {
-                foreach (string modifier in def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags)
-                {
-                    Log.Message($"TYT: DefaultToolAssignmentTags-->{modifier}");
-                    yield return modifier;
-                }
-            }
 
-        }
         #endregion
 
         #region Methods

@@ -18,8 +18,8 @@ namespace TakeYourTools
         public static StatDef ToolCarryCapacity;
 
         // ToolsStatFactors
-        public static StatDef ToolEstimatedLifespan;
-        public static StatDef ToolEffectivenessFactor;
+        public static StatDef StatEstimatedLifespan;
+        public static StatDef StatQualityFactor;
 
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<StatDef>
-		<defName>ToolEstimatedLifespan</defName>
+		<defName>StatEstimatedLifespan</defName>
 		<workerClass>TakeYourTools.TYT_StatWorkerEstimatedLifespan</workerClass>
 		<label>estimated tool lifespan</label>
 		<description>The amount of continuous use this tool can withstand before breaking. This doesn't take the current condition of the tool into account.</description>
@@ -23,8 +23,8 @@
 		</parts>
 	</StatDef>
 	<StatDef>
-		<defName>ToolEffectivenessFactor</defName>
-		<label>tool effectiveness factor</label>
+		<defName>StatQualityFactor</defName>
+		<label>stat quality factor</label>
 		<description>A global multiplier of this tool's stat modifiers.</description>
 		<category>ToolStatCategoryDef</category>
 		<displayPriorityInCategory>10</displayPriorityInCategory>

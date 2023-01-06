@@ -70,9 +70,9 @@ namespace TakeYourTools
 
             // Tool quality factor
             builder.AppendLine();
-            value = tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
+            value = tool.GetStatValue(TYT_StatToolsDefOf.StatQualityFactor);
             finalValue *= value;
-            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            builder.AppendLine(TYT_StatToolsDefOf.StatQualityFactor.LabelCap + ": " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
 
             // Stuff wear factor
             builder.AppendLine();
@@ -108,9 +108,9 @@ namespace TakeYourTools
             Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_stat.description {tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor)}");
 
             builder.AppendLine();
-            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " +
-                tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_GetStatValueo {TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor)}");
+            builder.AppendLine(TYT_StatToolsDefOf.StatQualityFactor.LabelCap + ": " +
+                tool.GetStatValue(TYT_StatToolsDefOf.StatQualityFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_GetStatValueo {TYT_StatToolsDefOf.StatQualityFactor.LabelCap + ": " + tool.GetStatValue(TYT_StatToolsDefOf.StatQualityFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor)}");
 
             if (stuffProps != null)
             {
