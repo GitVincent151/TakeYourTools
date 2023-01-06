@@ -28,9 +28,19 @@ namespace TakeYourTools
                 return null;
             }
         }
-        public bool InUse =>
-            HoldingPawn != null && HoldingPawn.CanUseTools() && HoldingPawn.CanUseTools(def) &&
-            TYT_ToolUtility.BestToolsFor(HoldingPawn).Contains(this);
+        public bool InUse
+        {
+            get
+            {
+                return HoldingPawn != null
+                       && HoldingPawn.CanUseTools()
+                       && HoldingPawn.CanUseTools(def)
+                       && TYT_ToolUtility.BestToolsFor(HoldingPawn).Contains(this);
+            }
+        }
+        public int WorkTicksToDegrade =>
+           Mathf.FloorToInt((this.GetStatValue(TYT_StatToolsDefOf.ToolEstimatedLifespan) * GenDate.TicksPerDay) / MaxHitPoints);
+
         #endregion
 
         #region Constructor
@@ -73,8 +83,7 @@ namespace TakeYourTools
         #endregion
 
         #region Methods
-        public int WorkTicksToDegrade => Mathf.FloorToInt((this.GetStatValue(TYT_StatDefOf.ToolEstimatedLifespan) * GenDate.TicksPerDay) / MaxHitPoints);
-
+        /*
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
             Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats");
@@ -88,6 +97,7 @@ namespace TakeYourTools
             Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats_out");
 
         }
+        */
         public override void ExposeData()
         {
             base.ExposeData();

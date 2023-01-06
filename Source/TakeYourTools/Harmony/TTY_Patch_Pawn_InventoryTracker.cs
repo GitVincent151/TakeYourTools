@@ -17,7 +17,7 @@ namespace TakeYourTools
 
             public static void Postfix(Pawn_InventoryTracker __instance, ref ThingCount __result)
             {
-                Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - FirstUnloadableThing");
+                Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - Postfix");
                 if (__result.Thing is TYT_ToolThing tool && tool.InUse)
                 {
                     bool foundNewThing = false;
@@ -45,16 +45,16 @@ namespace TakeYourTools
 
             public static void Postfix(Pawn_InventoryTracker __instance)
             {
-                Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - InventoryTrackerTickRare");
+
                 if (TYT_ToolsSettings.toolLimit)
                 {
                     Pawn pawn = __instance.pawn;
-                    if (pawn.CanUseTools() && pawn.GetHeldTools().Count() > pawn.GetStatValue(TYT_StatDefOf.ToolCarryCapacity) && pawn.CanRemoveExcessTools())
+                    if (pawn.CanUseTools() && pawn.GetHeldTools().Count() > pawn.GetStatValue(TYT_StatToolsDefOf.ToolCarryCapacity) && pawn.CanRemoveExcessTools())
                     {
                         Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - GetHeldTools");
                         Thing tool = pawn.GetHeldTools().Last();
-                        //Job job = pawn.DequipAndTryStoreTool(tool);
-                        //pawn.jobs.StartJob(job, JobCondition.InterruptForced, cancelBusyStances: false);
+                        Job job = pawn.DequipAndTryStoreTool(tool);
+                        pawn.jobs.StartJob(job, JobCondition.InterruptForced, cancelBusyStances: false);
                     }
                 }
             }

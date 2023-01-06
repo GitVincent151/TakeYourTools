@@ -10,9 +10,10 @@ namespace TakeYourTools
         public static readonly TYT_ToolProperties defaultValues = new TYT_ToolProperties();
 
         public List<StatModifier> baseWorkStatFactors;
+
         public List<string> defaultToolAssignmentTags;
-        public float wearFactorMultiplier = 1f;
-        public float toolWearFactor = 1f;
+
+        // public float toolWearFactor = 1f;
 
     }
 }

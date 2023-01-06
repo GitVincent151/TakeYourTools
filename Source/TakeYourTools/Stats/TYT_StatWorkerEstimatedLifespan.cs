@@ -22,19 +22,14 @@ namespace TakeYourTools
         private float GetBaseEstimatedLifespan(TYT_ToolThing tool, BuildableDef def)
         {
             TYT_ToolProperties toolProperties = def.GetModExtension<TYT_ToolProperties>() ?? TYT_ToolProperties.defaultValues;
+            TYT_StuffProps stuffProps = tool.Stuff?.GetModExtension<TYT_StuffProps>() ?? TYT_StuffProps.defaultValues;
 
             if (!((ThingDef)def).useHitPoints)
                 return float.PositiveInfinity;
+            Log.Message($"TYT: TYT_StatWorkerEstimatedLifespan - GetBaseEstimatedLifespan {BaseWearInterval} * {tool.MaxHitPoints}");
+            return GenDate.TicksToDays(Mathf.RoundToInt((BaseWearInterval * tool.MaxHitPoints)));
 
-            // For def
-            if (tool == null)
-                return GenDate.TicksToDays(Mathf.RoundToInt((BaseWearInterval * def.GetStatValueAbstract(StatDefOf.MaxHitPoints)) / toolProperties.toolWearFactor));
-            /*
-            // For thing
-            StuffPropsTool stuffProps = tool.Stuff?.GetModExtension<StuffPropsTool>() ?? StuffPropsTool.defaultValues;
-            */
-            float wearFactor = tool.def.GetModExtension<TYT_ToolProperties>().toolWearFactor * (toolProperties.wearFactorMultiplier);
-            return GenDate.TicksToDays(Mathf.RoundToInt((BaseWearInterval * tool.MaxHitPoints) / wearFactor));
+            // Vincent return GenDate.TicksToDays(Mathf.RoundToInt((BaseWearInterval * tool.MaxHitPoints) / stuffProps.wearFactorMultiplier));
         }
         public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
         {

@@ -3,7 +3,7 @@
 namespace TakeYourTools
 {
     [DefOf]
-    public static class TYT_StatDefOf
+    public static class TYT_StatToolsDefOf
     {
 
         // BaseWorkStatFactors

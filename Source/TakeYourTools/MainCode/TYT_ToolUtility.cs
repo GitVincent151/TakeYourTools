@@ -13,17 +13,16 @@ namespace TakeYourTools
     public static class TYT_ToolUtility
     {
 
-        public static List<StatDef> ToolStats { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatsForTool()).ToList();
-        //public static List<WorkGiverDef> SurvivalToolWorkGivers { get; } = DefDatabase<WorkGiverDef>.AllDefsListForReading.Where(w => w.HasModExtension<WorkGiverExtension>()).ToList();
-        public static bool StatsForTool(this StatDef stat)
+        public static List<StatDef> ToolStats { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatRelevantForTool()).ToList();
+        public static bool StatRelevantForTool(this StatDef stat)
         {
-            Log.Message($"TYT: TYT_ToolUtility - StatsForTool StatDef {stat.ToStringSafe()}");
+            Log.Message($"TYT: TYT_ToolUtility - StatRelevantForTool StatDef {stat.ToStringSafe()}");
             if (!stat.parts.NullOrEmpty())
                 foreach (StatPart part in stat.parts)
                 {
                     
-                    Log.Message($"TYT: TYT_ToolUtility - StatsForTool stat.parts {part.GetType().FullName}"); 
-                    if (part?.GetType() == typeof(TYT_StatDefOf))
+                    Log.Message($"TYT: TYT_ToolUtility - StatRelevantForTool stat.parts {part.GetType().FullName}"); 
+                    if (part?.GetType() == typeof(TYT_StatTool))
                     {
                         Log.Message($"TYT: TYT_ToolUtility - StatsForTool found TYT_StatDefOf {part.GetType().FullName}");
                         return true;
@@ -31,18 +30,6 @@ namespace TakeYourTools
                         
                 }
             return false;
-            /*
-            if (stat.category.defName == "PawnWork")
-                return true;
-            */
-            /*
-            if (!stat.parts.NullOrEmpty())
-                foreach (StatPart part in stat.parts)
-                    if (part?.GetType() == typeof(statDef))
-                        return true;
-            return false;
-            */
-
         }
         
 
@@ -71,25 +58,39 @@ namespace TakeYourTools
         {
             Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText");
             List<StatModifier> statFactorList = tool.WorkStatFactors.ToList();
-            //StuffPropsTool stuffPropsTool = tool.Stuff?.GetModExtension<StuffPropsTool>();
+            TYT_StuffProps stuffProps = tool.Stuff?.GetModExtension<TYT_StuffProps>();
 
             StringBuilder builder = new StringBuilder();
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText Description ={stat.description}");
             builder.AppendLine(stat.description);
 
             builder.AppendLine();
             builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
 
             builder.AppendLine();
-            builder.AppendLine(TYT_StatDefOf.ToolEffectivenessFactor.LabelCap + ": " +
-                tool.GetStatValue(TYT_StatDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-            
-            /*if (stuffPropsTool != null && stuffPropsTool.toolStatFactors.GetStatFactorFromList(stat) != 1f)
+            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " +
+                tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+/*
+            if (stuffProps != null && stuffProps.wearFactorMultiplier != 1f)
             {
                 builder.AppendLine();
+                builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
                 builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
-                    stuffPropsTool.toolStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                    stuffProps.wearFactorMultiplier.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
             }
-            */
+*/            /*
+            if (stuffProps != null && stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat) != 1f)
+            {
+                builder.AppendLine();
+                builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
+                    stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            }*/
+ /*           else
+            {
+                Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText stuffProps ={stat.description}");
+            }
+ */           
             builder.AppendLine();
             builder.AppendLine("StatsReport_FinalValue".Translate() + ": " + statFactorList.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
             return builder.ToString();
@@ -163,7 +164,7 @@ namespace TakeYourTools
             List<Thing> heldTools = pawn.GetHeldTools().ToList();
             return heldTools.Where(t => heldTools.IndexOf(t).IsUnderToolCarryLimitFor(pawn));
         }
-        public static bool IsUnderToolCarryLimitFor(this int count, Pawn pawn) => !TYT_ToolsSettings.toolLimit || count < pawn.GetStatValue(TYT_StatDefOf.ToolCarryCapacity);
+        public static bool IsUnderToolCarryLimitFor(this int count, Pawn pawn) => !TYT_ToolsSettings.toolLimit || count < pawn.GetStatValue(TYT_StatToolsDefOf.ToolCarryCapacity);
         /// <summary>
         /// Check if the pawn has the tool
         /// </summary>
@@ -191,6 +192,25 @@ namespace TakeYourTools
             return pawn.health.hediffSet.HasHediff(DefDatabase<HediffDef>.GetNamed("Washing"));
         }
         */
+
+        public static Job DequipAndTryStoreTool(this Pawn pawn, Thing tool, bool enqueueCurrent = true)
+        {
+            if (pawn.CurJob != null && enqueueCurrent)
+                pawn.jobs.jobQueue.EnqueueFirst(pawn.CurJob);
+
+            Zone_Stockpile pawnPosStockpile = Find.CurrentMap.zoneManager.ZoneAt(pawn.PositionHeld) as Zone_Stockpile;
+            if ((pawnPosStockpile == null || !pawnPosStockpile.settings.filter.Allows(tool)) &&
+                StoreUtility.TryFindBestBetterStoreCellFor(tool, pawn, pawn.Map, StoreUtility.CurrentStoragePriorityOf(tool), pawn.Faction, out IntVec3 c))
+            {
+                Job haulJob = new Job(JobDefOf.HaulToCell, tool, c)
+                {
+                    count = 1
+                };
+                pawn.jobs.jobQueue.EnqueueFirst(haulJob);
+            }
+
+            return new Job(TYT_JobDefOf.DropSurvivalTool, tool);
+        }
 
     }
 }

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="BaseTools_Crafted">
+		<defName>Primitive_Axe</defName>
+		<label>primitive axe</label>
+		<description>Effective at chopping down trees thanks to the head that's attached to its handle. This can also be used as a melee weapon in a pinch.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/Tools/primal_axe</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+		<costList>
+			<WoodLog>3</WoodLog>
+		</costList>
+		<statBases>
+			<Mass>2.5</Mass>
+			<MaxHitPoints>150</MaxHitPoints>
+			<WorkToMake>1500</WorkToMake>
+		</statBases>
+		<modExtensions>
+			<li Class="TakeYourTools.TYT_ToolProperties">
+				<baseWorkStatFactors>
+					<TreeFellingSpeed>1</TreeFellingSpeed>
+				</baseWorkStatFactors>
+				<defaultToolAssignmentTags>
+					<li>PlantWorker</li>
+				</defaultToolAssignmentTags>
+			</li>
+		</modExtensions>
+		<tools>
+			<li>
+				<label>handle</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<!-- 83% of the club's DPS with the main tool -->
+			<li>
+				<label>head</label>
+				<labelUsedInLogging>false</labelUsedInLogging>
+				<capacities>
+					<li>Cut</li>
+				</capacities>
+				<power>15.1</power>
+				<cooldownTime>2.6</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+	<ThingDef ParentName="BaseTools_Crafted">
+		<defName>Primitive_Hammer</defName>
+		<label>primitive hammer</label>
+		<description>A simple hammer that's a vital part of any constructor's arsenal of tools. This can also be used as a melee weapon in a pinch.</description>
+		<costList>
+			<WoodLog>3</WoodLog>
+		</costList>
+		<statBases>
+			<Mass>0.5</Mass>
+			<MaxHitPoints>100</MaxHitPoints>
+			<WorkToMake>1500</WorkToMake>
+		</statBases>
+		<graphicData>
+			<texPath>Things/Item/Equipment/Tools/primal_hammer</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+		<modExtensions>
+			<li Class="TakeYourTools.TYT_ToolProperties">
+				<baseWorkStatFactors>
+					<ConstructionSpeed>1</ConstructionSpeed>
+					<ConstructSuccessChance>1</ConstructSuccessChance>
+					<MiningSpeed>1</MiningSpeed>
+				</baseWorkStatFactors>
+				<defaultToolAssignmentTags>
+					<li>Constructor</li>
+					<li>Mining</li>
+				</defaultToolAssignmentTags>
+			</li>
+		</modExtensions>
+		<tools>
+			<li>
+				<label>handle</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>head</label>
+				<labelUsedInLogging>false</labelUsedInLogging>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11.6</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+	<ThingDef ParentName="BaseTools_Crafted">
+		<defName>Primitive_Sickle</defName>
+		<label>primitive sickle</label>
+		<description>A curved blade that's attached to a small handle which is typically used to cut plants. This can also be used as a melee weapon in a pinch.</description>
+		<statBases>
+			<Mass>0.5</Mass>
+			<MaxHitPoints>100</MaxHitPoints>
+			<WorkToMake>1000</WorkToMake>
+		</statBases>
+		<costList>
+			<WoodLog>5</WoodLog>
+		</costList>
+		<graphicData>
+			<texPath>Things/Item/Equipment/Tools/primal_sickle</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+		<modExtensions>
+			<li Class="TakeYourTools.TYT_ToolProperties">
+				<baseWorkStatFactors>
+					<PlantHarvestingSpeed>1</PlantHarvestingSpeed>
+				</baseWorkStatFactors>
+				<defaultToolAssignmentTags>
+					<li>PlantWorker</li>
+				</defaultToolAssignmentTags>
+			</li>
+		</modExtensions>
+		<tools>
+			<li>
+				<label>handle</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>head</label>
+				<labelUsedInLogging>false</labelUsedInLogging>
+				<capacities>
+					<li>Cut</li>
+				</capacities>
+				<power>11.6</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>

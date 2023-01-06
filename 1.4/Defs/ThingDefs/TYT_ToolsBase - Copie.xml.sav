@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ThingDef Name="BaseTools" Abstract="True">
+	<!--<ThingDef Name="BaseTools" Abstract="True">-->
+	<ThingDef Name="BaseTools" Abstract="True" ParentName="ResourceBase">
+		<category>Item</category>
 		<!-- Inherits from ThingWithComps; properties are defined through the DefModExtension SurvivalToolProperties -->
 		<thingClass>TakeYourTools.TYT_ToolThing</thingClass>
-		<category>Item</category>
-		<drawerType>MapMeshOnly</drawerType>
-		<drawGUIOverlay>true</drawGUIOverlay>
-		<altitudeLayer>Item</altitudeLayer>
-		<alwaysHaulable>true</alwaysHaulable>
 		<tickerType>Never</tickerType>
+		<drawGUIOverlay>true</drawGUIOverlay>
 		<equipmentType>Primary</equipmentType>
-		<useHitPoints>true</useHitPoints>
-		<pathCost>14</pathCost>
+		<resourceReadoutPriority>Middle</resourceReadoutPriority>
 		<selectable>true</selectable>
+		<altitudeLayer>Item</altitudeLayer>
+		<useHitPoints>true</useHitPoints>
+		<alwaysHaulable>true</alwaysHaulable>
+		<pathCost>15</pathCost>
+		<graphicData>
+			<onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+		</graphicData>
+		<equippedAngleOffset>-65</equippedAngleOffset>
 		<statBases>
-			<!--// see BaseWapons.xml-->
-			<Flammability>1.0</Flammability>
-			<DeteriorationRate>2</DeteriorationRate>
-			<Beauty>-3</Beauty>
-			<SellPriceFactor>0.20</SellPriceFactor>
+			<MaxHitPoints>52</MaxHitPoints>
+			<DeteriorationRate>3</DeteriorationRate>
+			<Mass>2</Mass>
+			<Flammability>0.11</Flammability>
+			<ToolEffectivenessFactor>1.07</ToolEffectivenessFactor>
 		</statBases>
+		<weaponTags>
+			<li>Melee</li>
+			<li>Tool</li>
+		</weaponTags>
+		<thingCategories>
+			<li>BaseTools</li>
+		</thingCategories>
 		<comps>
 			<li Class="CompProperties_Forbiddable"/>
 			<li>
 				<compClass>CompEquippable</compClass>
 			</li>
 		</comps>
-		<weaponTags>
-			<li>Melee</li>
-			<li>Tool</li>
-		</weaponTags>
-		<graphicData>
-			<onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
-		</graphicData>
 		<inspectorTabs>
 			<li>ITab_Art</li>
 		</inspectorTabs>
-		<allowedArchonexusCount>1</allowedArchonexusCount>
 	</ThingDef>
-	<!--==================================== BaseTools_Crafted ====================================-->
 	<ThingDef Name="BaseTools_Crafted" ParentName="BaseTools" Abstract="True">
 		<thingCategories>
 			<li>BaseTools_Crafted</li>
@@ -46,161 +49,116 @@
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
-			<skillRequirements>
-				<Crafting>3</Crafting>
-			</skillRequirements>
-			<effectWorking>Sculpt</effectWorking>
-			<soundWorking>Recipe_Sculpt</soundWorking>
+			<effectWorking>Smelt</effectWorking>
 			<recipeUsers>
 				<li>CraftingSpot</li>
 			</recipeUsers>
 			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 		</recipeMaker>
-		<smeltable>false</smeltable>
-		<stuffCategories>
-			<li>Stony</li>
-		</stuffCategories>
-		<costStuffCount>5</costStuffCount>
 		<techLevel>Neolithic</techLevel>
 		<comps>
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
 		</comps>
-		<tradeTags>
-			<li>CraftedTools</li>
-		</tradeTags>
 	</ThingDef>
-	<!--==================================== BaseTools_Forged ====================================-->
 	<ThingDef Name="BaseTools_Forged" ParentName="BaseTools" Abstract="True">
+		<stuffCategories>
+			<li>Metallic</li>
+			<li>Woody</li>
+		</stuffCategories>
 		<thingCategories>
 			<li>BaseTools_Forged</li>
 		</thingCategories>
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
-			<skillRequirements>
-				<Crafting>4</Crafting>
-			</skillRequirements>
 			<effectWorking>Smith</effectWorking>
 			<soundWorking>Recipe_Smith</soundWorking>
 			<recipeUsers>
 				<li>ElectricSmithy</li>
 				<li>FueledSmithy</li>
 			</recipeUsers>
+			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 			<defaultIngredientFilter>
 				<categories>
 					<li>Root</li>
 				</categories>
 				<disallowedThingDefs>
-					<li>Gold</li>
 					<li>Silver</li>
-					<li>Plasteel</li>
-					<li>Jade</li>
-					<li>Uranium</li>
+					<li>Gold</li>
 				</disallowedThingDefs>
 			</defaultIngredientFilter>
-			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 		</recipeMaker>
-		<smeltable>true</smeltable>
-		<stuffCategories>
-			<li>Metallic</li>
-		</stuffCategories>
-		<costStuffCount>40</costStuffCount>
 		<techLevel>Medieval</techLevel>
 		<comps>
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
 		</comps>
-		<tradeTags>
-			<li>ForgedTools</li>
-		</tradeTags>
 	</ThingDef>
-	<!--==================================== BaseTools_Machined ====================================-->
 	<ThingDef Name="BaseTools_Machined" ParentName="BaseTools" Abstract="True">
+		<stuffCategories>
+			<li>Metallic</li>
+		</stuffCategories>
 		<thingCategories>
 			<li>BaseTools_Machined</li>
 		</thingCategories>
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
-			<skillRequirements>
-				<Crafting>4</Crafting>
-			</skillRequirements>
 			<effectWorking>Smith</effectWorking>
 			<soundWorking>Recipe_Smith</soundWorking>
 			<recipeUsers>
 				<li>TableMachining</li>
 			</recipeUsers>
+			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 			<defaultIngredientFilter>
 				<categories>
 					<li>Root</li>
 				</categories>
 				<disallowedThingDefs>
-					<li>Gold</li>
 					<li>Silver</li>
-					<li>Plasteel</li>
-					<li>Jade</li>
-					<li>Uranium</li>
+					<li>Gold</li>
 				</disallowedThingDefs>
 			</defaultIngredientFilter>
-			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 		</recipeMaker>
-		<smeltable>false</smeltable>
-		<stuffCategories>
-			<li>Metallic</li>
-		</stuffCategories>
-		<costStuffCount>30</costStuffCount>
 		<techLevel>Industrial</techLevel>
 		<comps>
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
 		</comps>
-		<tradeTags>
-			<li>MachinedTools</li>
-		</tradeTags>
 	</ThingDef>
-	<!--==================================== BaseTools_Tailored ====================================-->
 	<ThingDef Name="BaseTools_Tailored" ParentName="BaseTools" Abstract="True">
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
 		<thingCategories>
 			<li>BaseTools_Tailored</li>
 		</thingCategories>
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
-			<skillRequirements>
-				<Crafting>4</Crafting>
-			</skillRequirements>
 			<effectWorking>Tailor</effectWorking>
 			<soundWorking>Recipe_Tailor</soundWorking>
 			<recipeUsers>
-				<li>TableMachining</li>
+				<li>ElectricTailoringBench</li>
+				<li>HandTailoringBench</li>
 			</recipeUsers>
 			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 		</recipeMaker>
-		<smeltable>false</smeltable>
-		<stuffCategories>
-			<li>Fabric</li>
-			<li>Leathery</li>
-		</stuffCategories>
-		<costList>
-			<ComponentIndustrial>1</ComponentIndustrial>
-			<Steel>20</Steel>
-		</costList>
-		<costStuffCount>40</costStuffCount>
-		<techLevel>Medieval</techLevel>
+		    <statBases>
+      <WorkToMake>6000</WorkToMake>
+	      </statBases>
+	  <techLevel>Medieval</techLevel>
 		<comps>
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
-		</comps>
-		<tradeTags>
-			<li>TailoredTools</li>
-		</tradeTags>
+		</comps>		
 	</ThingDef>
-	<!--==================================== BaseTools_Components ====================================-->
 	<ThingDef Name="BaseTools_Components" ParentName="BaseTools" Abstract="True">
 		<thingCategories>
 			<li>BaseTools_Components</li>
@@ -208,30 +166,17 @@
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
-			<skillRequirements>
-				<Crafting>7</Crafting>
-			</skillRequirements>
 			<effectWorking>Smelt</effectWorking>
-			<soundWorking>Recipe_Smith</soundWorking>
 			<recipeUsers>
 				<li>FabricationBench</li>
 			</recipeUsers>
 			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
 		</recipeMaker>
-		<costList>
-			<ComponentSpacer>1</ComponentSpacer>
-			<Plasteel>40</Plasteel>
-		</costList>
-		<smeltable>false</smeltable>
-		<costStuffCount>50</costStuffCount>
 		<techLevel>Spacer</techLevel>
 		<comps>
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
 		</comps>
-		<tradeTags>
-			<li>ComponentsTools</li>
-		</tradeTags>
 	</ThingDef>
 </Defs>
