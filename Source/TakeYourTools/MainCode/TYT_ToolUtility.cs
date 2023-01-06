@@ -51,48 +51,81 @@ namespace TakeYourTools
         /// <summary>
         /// Generate report for tool properties
         /// </summary>
-        /// <param name="tool"></param>
-        /// <param name="stat"></param>
-        /// <returns>String with the report</returns>
         public static string GetToolOverrideReportText(TYT_ToolThing tool, StatDef stat)
         {
-            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText");
-            List<StatModifier> statFactorList = tool.WorkStatFactors.ToList();
             TYT_StuffProps stuffProps = tool.Stuff?.GetModExtension<TYT_StuffProps>();
 
             StringBuilder builder = new StringBuilder();
-            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText Description ={stat.description}");
             builder.AppendLine(stat.description);
 
             builder.AppendLine();
+            float value = tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat);
+            Log.Message($"TYT: TYT_ToolUtility - GetStuffOverrideReportText Value = {value.ToString()}");
+            builder.AppendLine(tool.def.LabelCap + ": " + value.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+
+            builder.AppendLine();
+            float toolEffectivenessFactor = tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
+            Log.Message($"TYT: TYT_ToolUtility - GetStuffOverrideReportText Value = {toolEffectivenessFactor.ToString()}");
+            builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + toolEffectivenessFactor.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+
+            builder.AppendLine();
+            float finalValue = value * toolEffectivenessFactor;
+            builder.AppendLine("StatsReport_FinalValue".Translate() + ": " + finalValue.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Generate report for stuff properties
+        /// </summary>
+        public static string GetStuffOverrideReportText(TYT_ToolThing tool, StatDef stat)
+        {
+            Log.Message($"TYT: TYT_ToolUtility - GetStuffOverrideReportText");
+            //List<StatModifier> statFactorList = tool.WorkStatFactors.ToList();
+            TYT_StuffProps stuffProps = tool.Stuff?.GetModExtension<TYT_StuffProps>();
+
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(stat.description);
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_stat.description {stat.description}");
+
+            builder.AppendLine();
             builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_stat.description {tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor)}");
 
             builder.AppendLine();
             builder.AppendLine(TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " +
                 tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-/*
-            if (stuffProps != null && stuffProps.wearFactorMultiplier != 1f)
+            Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReport_GetStatValueo {TYT_StatToolsDefOf.ToolEffectivenessFactor.LabelCap + ": " + tool.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor)}");
+
+            if (stuffProps != null)
             {
                 builder.AppendLine();
                 builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-                builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
-                    stuffProps.wearFactorMultiplier.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " + stuffProps.wearFactorMultiplier.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText Result {builder.ToString()}");
             }
-*/            /*
-            if (stuffProps != null && stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat) != 1f)
-            {
-                builder.AppendLine();
-                builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-                builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
-                    stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
-            }*/
- /*           else
-            {
-                Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText stuffProps ={stat.description}");
-            }
- */           
+            /*
+                        if (stuffProps != null && stuffProps.wearFactorMultiplier != 1f)
+                        {
+                            builder.AppendLine();
+                            builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                            builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
+                                stuffProps.wearFactorMultiplier.ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                        }
+            */            /*
+                        if (stuffProps != null && stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat) != 1f)
+                        {
+                            builder.AppendLine();
+                            builder.AppendLine(tool.def.LabelCap + ": " + tool.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                            builder.AppendLine("StatsReport_Material".Translate() + " (" + tool.Stuff.LabelCap + "): " +
+                                stuffProps.wearFactorMultiplier.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+                        }*/
+            /*           else
+                       {
+                           Log.Message($"TYT: TYT_ToolUtility - GetToolOverrideReportText stuffProps ={stat.description}");
+                       }
+            */
             builder.AppendLine();
-            builder.AppendLine("StatsReport_FinalValue".Translate() + ": " + statFactorList.GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
+            builder.AppendLine("StatsReport_FinalValue".Translate() + ": " + tool.WorkStatFactors.ToList().GetStatFactorFromList(stat).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Factor));
             return builder.ToString();
         }
 

@@ -10,6 +10,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
+using static UnityEngine.GridBrushBase;
 
 namespace TakeYourTools
 {
@@ -48,7 +49,7 @@ namespace TakeYourTools
 
         #region Properties
         /// <summary>
-        /// WorkStatFactors: list of stat modifiers
+        /// Get baseWorkStatFactors according to wearFactorMultiplier 
         /// </summary>
         public IEnumerable<StatModifier> WorkStatFactors
         {
@@ -57,10 +58,15 @@ namespace TakeYourTools
                 foreach (StatModifier modifier in def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors)
                 {
                     Log.Message($"TYT: WorkStatFactors-->{modifier.stat},{modifier.value}");
+
+                    float newFactor = this.GetStatValue(TYT_StatToolsDefOf.ToolEffectivenessFactor);
+                    Log.Message($"TYT: WorkStatFactors---> ToolEffectivenessFactor-->{newFactor.ToString()}");
+
+                    Log.Message($"TYT: WorkStatFactors-->{modifier.stat},{modifier.value * newFactor}");
                     yield return new StatModifier
                     {
                         stat = modifier.stat,
-                        value = modifier.value
+                        value = modifier.value * newFactor
                     };
                 }
             }
@@ -83,7 +89,6 @@ namespace TakeYourTools
         #endregion
 
         #region Methods
-        /*
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
             Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats");
@@ -97,7 +102,6 @@ namespace TakeYourTools
             Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats_out");
 
         }
-        */
         public override void ExposeData()
         {
             base.ExposeData();

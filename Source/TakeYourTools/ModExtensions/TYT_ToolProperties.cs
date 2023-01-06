@@ -13,7 +13,7 @@ namespace TakeYourTools
 
         public List<string> defaultToolAssignmentTags;
 
-        // public float toolWearFactor = 1f;
+        public float toolWearFactor = 1f;
 
     }
 }

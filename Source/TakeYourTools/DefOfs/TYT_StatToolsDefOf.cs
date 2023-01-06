@@ -7,9 +7,12 @@ namespace TakeYourTools
     {
 
         // BaseWorkStatFactors
-        public static StatDef PlantHarvestYield;
-        public static StatDef ConstructionSpeed;
-        public static StatDef ConstructSuccessChance;
+        //public static StatDef PlantHarvestYield;
+        //public static StatDef ConstructionSpeed;
+        //public static StatDef ConstructSuccessChance;
+        //public static StatDef TreeFellingSpeed;
+        //public static StatDef baseWorkStatFactors;
+        //public static StatDef PlantHarvestingSpeed;
 
         // PawnWorkStatFactors
         public static StatDef ToolCarryCapacity;

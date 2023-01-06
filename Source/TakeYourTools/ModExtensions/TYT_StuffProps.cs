@@ -9,8 +9,6 @@ namespace TakeYourTools
 
         public static readonly TYT_StuffProps defaultValues = new TYT_StuffProps();
 
-        // public List<StatModifier> wearFactorMultiplier;
-
         public float wearFactorMultiplier = 1f;
 
     }

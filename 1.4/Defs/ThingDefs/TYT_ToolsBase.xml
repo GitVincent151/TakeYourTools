@@ -107,6 +107,7 @@
 			<li>Metallic</li>
 		</stuffCategories>
 		<costStuffCount>40</costStuffCount>
+		<toolWearFactor>0.25</toolWearFactor>
 		<techLevel>Medieval</techLevel>
 		<comps>
 			<li>
@@ -152,6 +153,7 @@
 			<li>Metallic</li>
 		</stuffCategories>
 		<costStuffCount>30</costStuffCount>
+		<toolWearFactor>0.20</toolWearFactor>
 		<techLevel>Industrial</techLevel>
 		<comps>
 			<li>
@@ -190,6 +192,7 @@
 			<Steel>20</Steel>
 		</costList>
 		<costStuffCount>40</costStuffCount>
+		<toolWearFactor>0.25</toolWearFactor>
 		<techLevel>Medieval</techLevel>
 		<comps>
 			<li>
@@ -224,6 +227,7 @@
 		</costList>
 		<smeltable>false</smeltable>
 		<costStuffCount>50</costStuffCount>
+		<toolWearFactor>0.15</toolWearFactor>
 		<techLevel>Spacer</techLevel>
 		<comps>
 			<li>

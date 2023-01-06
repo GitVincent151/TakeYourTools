@@ -12,7 +12,7 @@
 		<xpath>Defs/ThingDef[defName="Gold"]</xpath>
 		<value>
 			<li Class="TakeYourTools.TYT_StuffProps">
-				<wearFactorMultiplier>1.1</wearFactorMultiplier>
+				<wearFactorMultiplier>0.8</wearFactorMultiplier>
 			</li>
 		</value>
 	</Operation>
@@ -20,7 +20,7 @@
 		<xpath>Defs/ThingDef[defName="Plasteel"]</xpath>
 		<value>
 			<li Class="TakeYourTools.TYT_StuffProps">
-				<wearFactorMultiplier>1.3</wearFactorMultiplier>
+				<wearFactorMultiplier>0.9</wearFactorMultiplier>
 			</li>
 		</value>
 	</Operation>
@@ -28,7 +28,7 @@
 		<xpath>Defs/ThingDef[defName="WoodLog"]</xpath>
 		<value>
 			<li Class="TakeYourTools.TYT_StuffProps">
-				<wearFactorMultiplier>0.8</wearFactorMultiplier>
+				<wearFactorMultiplier>0.5</wearFactorMultiplier>
 			</li>
 		</value>
 	</Operation>
@@ -36,7 +36,7 @@
 		<xpath>Defs/ThingDef[defName="Uranium"]</xpath>
 		<value>
 			<li Class="TakeYourTools.TYT_StuffProps">
-				<wearFactorMultiplier>1.3</wearFactorMultiplier>
+				<wearFactorMultiplier>1.2</wearFactorMultiplier>
 			</li>
 		</value>
 	</Operation>
@@ -44,7 +44,15 @@
 		<xpath>Defs/ThingDef[defName="Jade"]</xpath>
 		<value>
 			<li Class="TakeYourTools.TYT_StuffProps">
-				<wearFactorMultiplier>1</wearFactorMultiplier>
+				<wearFactorMultiplier>1.1</wearFactorMultiplier>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/ThingDef[defName="Marble"]</xpath>
+		<value>
+			<li Class="TakeYourTools.TYT_StuffProps">
+				<wearFactorMultiplier>0.7</wearFactorMultiplier>
 			</li>
 		</value>
 	</Operation>

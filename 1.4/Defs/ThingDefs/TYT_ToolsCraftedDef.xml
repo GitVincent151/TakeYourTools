@@ -20,11 +20,12 @@
 		<modExtensions>
 			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<TreeFellingSpeed>1</TreeFellingSpeed>
+					<EatingSpeed>1.1</EatingSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
 					<li>PlantWorker</li>
 				</defaultToolAssignmentTags>
+				<toolWearFactor>0.25</toolWearFactor>
 			</li>
 		</modExtensions>
 		<tools>
@@ -70,11 +71,9 @@
 				<baseWorkStatFactors>
 					<ConstructionSpeed>1</ConstructionSpeed>
 					<ConstructSuccessChance>1</ConstructSuccessChance>
-					<MiningSpeed>1</MiningSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
 					<li>Constructor</li>
-					<li>Mining</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>
@@ -118,7 +117,8 @@
 		<modExtensions>
 			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<PlantHarvestingSpeed>1</PlantHarvestingSpeed>
+					<PlantHarvestYield>1</PlantHarvestYield>
+					<PlantWorkSpeed>1</PlantWorkSpeed>					
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
 					<li>PlantWorker</li>
