@@ -23,7 +23,8 @@
 					<EatingSpeed>1.1</EatingSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>PlantWorker</li>
+					<li>CutPlant</li>
+					<li>CutPlantDesignated</li>
 				</defaultToolAssignmentTags>
 				<toolWearFactor>0.25</toolWearFactor>
 			</li>

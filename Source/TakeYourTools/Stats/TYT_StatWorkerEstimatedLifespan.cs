@@ -9,10 +9,10 @@ namespace TakeYourTools
     {
 
         public static int BaseWearInterval =>
-            Mathf.RoundToInt(GenDate.TicksPerHour * ((TYT_ToolsSettings.hardcoreMode) ? 0.67f : 1f)); // Once per hour of continuous work, or ~40 mins with hardcore
+            Mathf.RoundToInt(GenDate.TicksPerHour * ((TYT_ModSettings.hardcoreMode) ? 0.67f : 1f)); // Once per hour of continuous work, or ~40 mins with hardcore
 
         public override bool ShouldShowFor(StatRequest req) =>
-            ((BuildableDef)req.Def).IsTool() && TYT_ToolsSettings.ToolDegradation;
+            ((BuildableDef)req.Def).IsTool() && TYT_ModSettings.ToolDegradation;
 
         public override float GetValueUnfinalized(StatRequest req, bool applyPostProcess = true)
         {
@@ -38,14 +38,14 @@ namespace TakeYourTools
         }
         public override void FinalizeValue(StatRequest req, ref float val, bool applyPostProcess)
         {
-            val /= TYT_ToolsSettings.ToolDegradationFactor;
+            val /= TYT_ModSettings.ToolDegradationFactor;
             base.FinalizeValue(req, ref val, applyPostProcess);
         }
         public override string GetExplanationFinalizePart(StatRequest req, ToStringNumberSense numberSense, float finalVal)
         {
             StringBuilder finalBuilder = new StringBuilder();
             finalBuilder.AppendLine($"{"Settings_ToolDegradationRate".Translate()}: " +
-                $"{(1 / TYT_ToolsSettings.ToolDegradationFactor).ToStringByStyle(ToStringStyle.FloatTwo, ToStringNumberSense.Factor)}");
+                $"{(1 / TYT_ModSettings.ToolDegradationFactor).ToStringByStyle(ToStringStyle.FloatTwo, ToStringNumberSense.Factor)}");
             finalBuilder.AppendLine();
             finalBuilder.AppendLine(base.GetExplanationFinalizePart(req, numberSense, finalVal));
             return finalBuilder.ToString();

@@ -78,11 +78,13 @@ namespace TakeYourTools
                     Log.Message($"TYT: WorkStatFactors---> ToolEffectivenessFactor-->{newFactor.ToString()}");
 
                     Log.Message($"TYT: WorkStatFactors-->{modifier.stat},{modifier.value * newFactor}");
+
                     yield return new StatModifier
                     {
                         stat = modifier.stat,
                         value = modifier.value * newFactor
                     };
+
                 }
             }
         }
@@ -101,7 +103,6 @@ namespace TakeYourTools
                     TYT_ToolUtility.GetToolOverrideReportText(this, modifier.stat), 1);
             }
             Log.Message($"TYT: TYT_ToolThing - SpecialDisplayStats_out");
-
         }
         public override void ExposeData()
         {

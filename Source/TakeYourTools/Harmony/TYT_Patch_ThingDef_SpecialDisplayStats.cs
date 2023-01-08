@@ -5,12 +5,12 @@ using Verse;
 
 namespace TakeYourTools
 {
-
+/*
     [HarmonyPatch(typeof(ThingDef))]
     [HarmonyPatch(nameof(ThingDef.SpecialDisplayStats))]
     public static class TYT_Patch_ThingDef_SpecialDisplayStats
     {
-/*
+
         public static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> __result, ThingDef __instance, StatRequest req)
         {
             Log.Message($"TYT: TYT_Patch_ThingDef_SpecialDisplayStats - Postfix"); 
@@ -44,8 +44,8 @@ namespace TakeYourTools
             }
 
         }
-*/
-    }
 
+    }
+*/
 
 }

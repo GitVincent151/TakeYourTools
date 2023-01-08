@@ -39,8 +39,8 @@ namespace TakeYourTools
             }
         }
 
-        public float NoToolStatFactor => TYT_ToolsSettings.reduceNoToolWorkEfficiency
-            ? TYT_ToolsSettings.hardcoreMode ? NoToolStatFactorHardcore : noToolStatFactor
+        public float NoToolStatFactor => TYT_ModSettings.reduceNoToolWorkEfficiency
+            ? TYT_ModSettings.hardcoreMode ? NoToolStatFactorHardcore : noToolStatFactor
             : 1f;
 
 

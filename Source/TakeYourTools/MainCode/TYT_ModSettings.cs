@@ -4,17 +4,23 @@ using Verse;
 
 namespace TakeYourTools
 {
-    public class TYT_ToolsSettings : ModSettings
+    public class TYT_ModSettings : ModSettings
     {
+        #region Properties
         public static bool hardcoreMode = false;
         public static bool reduceNoToolWorkEfficiency = false;
         public static bool toolMapGen = true;
         public static bool toolLimit = true;
         private static float toolDegradationFactor = 1f;
+        public static bool toolOptimization = true;
         public static float ToolDegradationFactor => Mathf.Pow(toolDegradationFactor, (toolDegradationFactor < 1f) ? 1 : 2);
         public static bool ToolDegradation => toolDegradationFactor > 0f;
-        public static bool toolOptimization = true;
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Interface for the mod settings
+        /// </summary>
         public void DoWindowContents(Rect wrect)
         {
             Listing_Standard options = new Listing_Standard();
@@ -25,6 +31,7 @@ namespace TakeYourTools
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
             options.Gap();
+
             // Same GUI colour as Merciless
             GUI.color = new Color(1f, 0.2f, 0.2f);
             options.CheckboxLabeled("Settings_HardcoreMode".Translate(), ref hardcoreMode, "Settings_HardcoreMode_Tooltip".Translate());
@@ -45,10 +52,14 @@ namespace TakeYourTools
             options.CheckboxLabeled("Settings_ToolOptimization".Translate(), ref toolOptimization, "Settings_ToolOptimization_Tooltip".Translate());
             options.End();
 
-            Mod.GetSettings<TYT_ToolsSettings>().Write();
+            // Get the new settings
+            Mod.GetSettings<TYT_ModSettings>().Write();
 
         }
 
+        /// <summary>
+        /// Save Data
+        /// </summary>
         public override void ExposeData()
         {
             Scribe_Values.Look(ref hardcoreMode, "hardcoreMode", false);
@@ -58,28 +69,6 @@ namespace TakeYourTools
             Scribe_Values.Look(ref toolDegradationFactor, "toolDegradationFactor", 1f);
             Scribe_Values.Look(ref toolOptimization, "toolOptimization", true);
         }
-
+        #endregion
     }
-
-    public class TYT_Mod : Mod
-    {
-        public TYT_ToolsSettings settings;
-
-        public TYT_Mod(ModContentPack content) : base(content)
-        {
-            GetSettings<TYT_ToolsSettings>();
-        }
-
-        public override string SettingsCategory()
-        {
-            return "TakeYourTools (TYT): ToolsSettingsCategory".Translate();
-        }
-
-        public override void DoSettingsWindowContents(Rect inRect)
-        {
-            GetSettings<TYT_ToolsSettings>().DoWindowContents(inRect);
-        }
-
-    }
-
 }

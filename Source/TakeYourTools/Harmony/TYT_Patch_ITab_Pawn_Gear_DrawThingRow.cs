@@ -7,7 +7,7 @@ using Verse;
 
 namespace TakeYourTools
 {
-
+/*
     [HarmonyPatch(typeof(ITab_Pawn_Gear))]
     [HarmonyPatch("DrawThingRow")]
     public static class TYT_Patch_ITab_Pawn_Gear_DrawThingRow
@@ -49,14 +49,12 @@ namespace TakeYourTools
                 // Forced
                 if (pawn.GetComp<TYT_PawnToolAssignmentTracker>() is TYT_PawnToolAssignmentTracker jobToolAssignmentTracker && jobToolAssignmentTracker.forcedHandler.IsForced(tool))
                     originalLabel += $", {"ApparelForcedLower".Translate()}";
-                /* Vincent
+
                 // In use
-                if (tool.InUse)
-                    originalLabel += $", {"ToolInUse".Translate()}";
-                */
+
             }
         }
 
     }
-
+*/
 }

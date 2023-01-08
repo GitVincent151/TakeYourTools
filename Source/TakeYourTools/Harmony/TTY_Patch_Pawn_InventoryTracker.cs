@@ -7,7 +7,7 @@ using static UnityEngine.Random;
 
 namespace TakeYourTools
 {
-
+/*
     public static class TYT_Patch_Pawn_InventoryTracker
     {
 
@@ -46,12 +46,13 @@ namespace TakeYourTools
             public static void Postfix(Pawn_InventoryTracker __instance)
             {
 
-                if (TYT_ToolsSettings.toolLimit)
+                if (TYT_ModSettings.toolLimit)
                 {
+                    
                     Pawn pawn = __instance.pawn;
                     if (pawn.CanUseTools() && pawn.GetHeldTools().Count() > pawn.GetStatValue(TYT_StatToolsDefOf.ToolCarryCapacity) && pawn.CanRemoveExcessTools())
                     {
-                        Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - GetHeldTools");
+                        // Log.Message($"TYT: TYT_Patch_Pawn_InventoryTracker - GetHeldTools");
                         Thing tool = pawn.GetHeldTools().Last();
                         Job job = pawn.DequipAndTryStoreTool(tool);
                         pawn.jobs.StartJob(job, JobCondition.InterruptForced, cancelBusyStances: false);
@@ -78,5 +79,5 @@ namespace TakeYourTools
         }
 
     }
-
+*/
 }

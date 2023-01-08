@@ -213,7 +213,7 @@ namespace TakeYourTools
             List<Thing> heldTools = pawn.GetHeldTools().ToList();
             return heldTools.Where(t => heldTools.IndexOf(t).IsUnderToolCarryLimitFor(pawn));
         }
-        public static bool IsUnderToolCarryLimitFor(this int count, Pawn pawn) => !TYT_ToolsSettings.toolLimit || count < pawn.GetStatValue(TYT_StatToolsDefOf.ToolCarryCapacity);
+        public static bool IsUnderToolCarryLimitFor(this int count, Pawn pawn) => !TYT_ModSettings.toolLimit || count < pawn.GetStatValue(TYT_StatToolsDefOf.ToolCarryCapacity);
         /// <summary>
         /// Check if the pawn has the tool
         /// </summary>
