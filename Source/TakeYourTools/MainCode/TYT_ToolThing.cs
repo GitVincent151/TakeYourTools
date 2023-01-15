@@ -21,7 +21,7 @@ namespace TakeYourTools
         /// GetModExtension
         /// </summary>
         public List<StatModifier> BaseWorkStatFactors => this.def.GetModExtension<TYT_ToolProperties>().baseWorkStatFactors;
-        public List<WorkTypeDef> DefaultToolAssignmentTags => this.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
+        public List<JobDef> DefaultToolAssignmentTags => this.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
         public float ToolWearFactor => this.def.GetModExtension<TYT_ToolProperties>().toolWearFactor;
 
         /// <summary>

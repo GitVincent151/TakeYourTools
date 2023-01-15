@@ -2,6 +2,10 @@
 using Verse.AI;
 using Verse;
 using RimWorld;
+using Unity.Jobs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TakeYourTools
 {
@@ -10,11 +14,6 @@ namespace TakeYourTools
         [StaticConstructorOnStartup]
         public static class Pawn_JobTracker_Patches
         {
-            /*
-            [HarmonyPatch(typeof(JobDriver))]
-            [HarmonyPatch("GetFinalizerJob")]
-            */
-
             [HarmonyPatch(typeof(Pawn_JobTracker))]
             [HarmonyPatch("StartJob")]
 
@@ -23,71 +22,56 @@ namespace TakeYourTools
                 [HarmonyPostfix]
                 public static void Postfix(Pawn_JobTracker __instance)
                 {
-                    if (__instance == null)
-                        return;
+                    Job __job = __instance?.curJob;
+                    JobDriver __curDriver = __instance?.curDriver;
+                    JobDef __curJobDef = __job?.def;
+                    Pawn __pawn = __curDriver?.pawn;
 
-                    Job __job = __instance.curJob;
-                    JobDriver __curDriver = __instance.curDriver;
-                    Pawn __pawm = __instance.curDriver.pawn;
-                    Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_Patches --> Job = {__job} jobDriver = {__curDriver} pawn = {__pawm}");
-
-                    /*
-                    __instance.AddPreInitAction(delegate
+                    if (__job != null && __curDriver != null && __curJobDef != null && __pawn != null)
                     {
-                        Pawn pawn = __instance.GetActor();
-                        JobDef activeJobDef = pawn.CurJob?.def;
-                        WorkGiverDef activeWorkGiverDef = pawn.CurJob?.workGiverDef;
-                        SkillDef activeSkill = pawn.CurJob?.RecipeDef?.workSkill;
+                        
 
-                        if (pawn == null || pawn.Dead || pawn.equipment == null || pawn.inventory == null || !pawn.RaceProps.Humanlike)
-                        {
-                            Log.Message($"TYT: TYT_Patch_GrabYourTools - Toil_Constructor AddPreInitAction Pawn = {__instance.actor} JobDef = {activeJobDef} WorkGiverDef = {activeJobDef} activeSkill = {activeSkill} autre = {__instance}"); 
+                        //if (__curDriver.pawn == null || __curDriver.pawn.Dead || __curDriver.pawn.equipment == null || __curDriver.pawn.inventory == null || !__curDriver.pawn.RaceProps.Humanlike)
+                        if (__pawn.Dead || !__pawn.RaceProps.Humanlike)
                             return;
-                        }
 
-                        if (pawn.Drafted)
+                        if (__pawn.Drafted)
                         {
                             // Init ToolMemoriesTracker
-                            TYT_Mod.ToolMemoriesTracker.ClearMemory(pawn);
+                            TYT_Mod.ToolMemoriesTracker.ClearMemory(__pawn);
                             return;
                         }
 
-
+                        if (!__pawn.CanUseTools())
+                            return;
                         
-                        Log.Message($"TYT: TYT_Patch_GrabYourTools - Toil_Constructor AddPreInitAction Pawn = {__instance.actor} JobDef = {activeJobDef} WorkGiverDef = {activeJobDef} activeSkill = {activeSkill} autre = {__instance}");
+                        
+                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_Patches --> 2 Job = {__job.def.defName} jobDriver = {__curDriver} pawn = {__pawn} JobDef = {__curJobDef}");
+                        
+                        //if (TYT_Mod.listofToolThinginGame.Contains())
+                        
+                        
+                        // Look for better alternative tools to what the colonist currently has, based on what stats are relevant to the work types the colonist is assigned to
+                        Log.Message($"TYT: TYT_ToolUtility - GetBestTool");
 
-                        if (__instance.activeSkill != null && __instance.activeSkill() != null)
-                            activeSkill = __instance.activeSkill();
 
-                        if (activeSkill != null)
+                        TYT_ToolThing tool = null;
+
+                        List<Thing> usableTools = __pawn.GetAllUsableTools().ToList();
+                        foreach (TYT_ToolThing curTool in usableTools.Cast<TYT_ToolThing>())
                         {
-                            TYT_ToolMemory memory = TYT_Mod.ToolMemoriesTracker.GetMemory(pawn);
+                            foreach (JobDef curToolJobDef in curTool.DefaultToolAssignmentTags)
+                            {
+                                if (curToolJobDef.defName == __curJobDef.defName)
+                                {
+                                    tool = curTool;
+                                    Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Found tool --> label = {tool.Label}");
 
-                            if (!memory.UpdateSkill(activeSkill))
-                                return;
-
-                            // Don't do it if this job uses weapons (i.e. hunting)
-                            if (activeSkill == SkillDefOf.Shooting || activeSkill == SkillDefOf.Melee)
-                            {
-                                memory.UpdateUsingTool(null, false);
-                            }
-                            // Check currently equipped item
-                            else if (pawn.equipment.Primary != null && TYT_ToolMemoryTracker.HasReleventStatModifiers(pawn.equipment.Primary, activeSkill))
-                            {
-                                memory.UpdateUsingTool(null, true);
-                            }
-                            // Try and find something else in inventory
-                            else
-                            {
-                                memory.UpdateUsingTool(pawn.equipment.Primary, TYT_ToolMemoryTracker.EquipAppropriateTool(pawn, activeSkill));
+                                }
                             }
                         }
-                        else
-                        {
-                            TYT_Mod.ToolMemoriesTracker.ClearMemory(pawn);
-                        }
-                    });
-                    */
+                    }
+
                 }
             }
         }

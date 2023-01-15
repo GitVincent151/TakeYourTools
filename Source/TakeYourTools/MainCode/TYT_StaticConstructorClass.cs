@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Unity.Jobs;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -30,16 +31,24 @@ namespace TakeYourTools
         static TYT_StaticConstructorClass()
         {
 
+            // Needed?
+            Log.Message($"TYT: TYT_StaticConstructorClass --> Checking Def");
+
+            /*
             // Add ToolAssignmentTracker property to all appropriate pawns
             foreach (ThingDef tDef in DefDatabase<ThingDef>.AllDefs.Where(t => t.race?.Humanlike == true))
             {
-                Log.Message("TYT: ToolAssignmentTracker for pawn ready");
+                               
+                Log.Message($"TYT: TYT_StaticConstructorClass --> Generating Def for CompProperties");
+                
+                
                 if (tDef.comps == null)
                 {
                     tDef.comps = new List<CompProperties>();
                 }
                 tDef.comps.Add(new CompProperties(typeof(TYT_PawnToolAssignmentTracker)));
             }
+            */
 
         }
         #endregion

@@ -12,7 +12,7 @@ namespace TakeYourTools
 
         public List<StatModifier> baseWorkStatFactors;
 
-        public List<WorkTypeDef> defaultToolAssignmentTags;
+        public List<JobDef> defaultToolAssignmentTags;
 
         public float toolWearFactor = 1f;
 

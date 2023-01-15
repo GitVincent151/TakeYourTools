@@ -23,7 +23,8 @@
 					<PlantWorkSpeed>1.1</PlantWorkSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>PlantCutting</li>
+					<li>CutPlant</li>
+					<li>CutPlantDesignated</li>
 				</defaultToolAssignmentTags>
 				<toolWearFactor>0.25</toolWearFactor>
 			</li>
@@ -72,7 +73,8 @@
 					<ConstructionSpeed>1.7</ConstructionSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>Construction</li>
+					<li>FinishFrame</li>
+					<li>PlaceNoCostFrame</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>
@@ -120,7 +122,9 @@
 					<PlantWorkSpeed>1.6</PlantWorkSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>Growing</li>
+					<li>Replant</li>
+					<li>PlantSeed</li>
+					<li>Sow</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>

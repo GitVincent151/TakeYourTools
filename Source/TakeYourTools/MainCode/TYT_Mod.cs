@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -21,6 +22,8 @@ namespace TakeYourTools
         public static TYT_Mod modInstance;
         // ToolMemoryTracker   
         public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
+        // Tool utility with list of tools
+        //public static List<TYT_ToolThing> listofToolThinginGame = new List<TYT_ToolThing>();
         #endregion
 
         #region Overide the interface for the mod settings 

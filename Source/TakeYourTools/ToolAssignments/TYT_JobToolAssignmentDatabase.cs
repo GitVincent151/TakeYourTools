@@ -60,7 +60,7 @@ namespace TakeYourTools
                     continue;
                 else
                 {
-                    foreach (WorkTypeDef toolAssignmentTags in toolProperties.defaultToolAssignmentTags)
+                    foreach (JobDef toolAssignmentTags in toolProperties.defaultToolAssignmentTags)
                     {
                         Log.Message($"TYT: TYT_JobToolAssignmentDatabase - GenerateStartingJobToolAssignments for defaultToolAssignmentTags {toolAssignmentTags}");
                         TYT_JobToolAssignment jobToolAssignment = MakeNewJobToolAssignment();

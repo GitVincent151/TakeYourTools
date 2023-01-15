@@ -12,6 +12,7 @@ namespace TakeYourTools
     {
         #region Properties
         private List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
+
         #endregion
 
         #region Constructor

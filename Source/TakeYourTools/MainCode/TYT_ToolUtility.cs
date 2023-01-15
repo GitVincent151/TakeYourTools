@@ -12,7 +12,6 @@ namespace TakeYourTools
 
     public static class TYT_ToolUtility
     {
-
         public static List<StatDef> StatDefForPawnWork { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatRelevantForPawnWork()).ToList();
         public static bool StatRelevantForPawnWork(this StatDef stat)
         {
@@ -170,7 +169,6 @@ namespace TakeYourTools
         /// Best tool for the pawn
         /// </summary>
         /// <param name="pawn"></param>
-        /// <returns>return the toolThing</returns>
         public static IEnumerable<TYT_ToolThing> BestToolsFor(Pawn pawn)
         {
             Log.Message($"TYT: TYT_ToolUtility - BestToolsFor"); 
@@ -183,6 +181,7 @@ namespace TakeYourTools
                 }
             }
         }
+
         public static TYT_ToolThing GetBestTool(this Pawn pawn, StatDef stat)
         {
             Log.Message($"TYT: TYT_ToolUtility - GetBestTool"); 
@@ -259,6 +258,24 @@ namespace TakeYourTools
 
             return new Job(TYT_JobDefOf.DropSurvivalTool, tool);
         }
+        /*
+        public static List<StatDef> AssignedToolRelevantWorkGiversStatDefs(this Pawn pawn)
+        {
+            List<StatDef> resultList = new List<StatDef>();
+            foreach (WorkGiver giver in pawn.AssignedToolRelevantWorkGivers())
+                foreach (StatDef stat in giver.def.GetModExtension<WorkGiverExtension>().requiredStats)
+                    if (!resultList.Contains(stat))
+                        resultList.Add(stat);
+            return resultList;
+        }
 
+        public static bool NeedsSurvivalTool(this Pawn pawn, TYT_ToolThing tool)
+        {
+            foreach (StatDef stat in pawn.AssignedToolRelevantWorkGiversStatDefs())
+                if (StatUtility.StatListContains(tool.WorkStatFactors.ToList(), stat))
+                    return true;
+            return false;
+        }
+        */
     }
 }

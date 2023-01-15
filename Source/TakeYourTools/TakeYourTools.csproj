@@ -67,10 +67,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stats\TYT_StatWorkerEstimatedLifespan.cs" />
     <Compile Include="Stats\TYT_StatTool.cs" />
-    <Compile Include="ToolAssignments\TYT_JobToolAssignment.cs" />
-    <Compile Include="ToolAssignments\TYT_JobToolAssignmentDatabase.cs" />
-    <Compile Include="ToolAssignments\TYT_PawnToolAssignmentTracker.cs" />
-    <Compile Include="ToolAssignments\TYT_ToolAssignment.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
@@ -82,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Alerts\" />
+    <Folder Include="ToolAssignments\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
