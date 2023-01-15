@@ -20,11 +20,10 @@
 		<modExtensions>
 			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<EatingSpeed>1.1</EatingSpeed>
+					<PlantWorkSpeed>1.1</PlantWorkSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>CutPlant</li>
-					<li>CutPlantDesignated</li>
+					<li>PlantCutting</li>
 				</defaultToolAssignmentTags>
 				<toolWearFactor>0.25</toolWearFactor>
 			</li>
@@ -70,11 +69,10 @@
 		<modExtensions>
 			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<ConstructionSpeed>1</ConstructionSpeed>
-					<ConstructSuccessChance>1</ConstructSuccessChance>
+					<ConstructionSpeed>1.7</ConstructionSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>Constructor</li>
+					<li>Construction</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>
@@ -118,11 +116,11 @@
 		<modExtensions>
 			<li Class="TakeYourTools.TYT_ToolProperties">
 				<baseWorkStatFactors>
-					<PlantHarvestYield>1</PlantHarvestYield>
-					<PlantWorkSpeed>1</PlantWorkSpeed>					
+					<PlantHarvestYield>1.5</PlantHarvestYield>
+					<PlantWorkSpeed>1.6</PlantWorkSpeed>
 				</baseWorkStatFactors>
 				<defaultToolAssignmentTags>
-					<li>PlantWorker</li>
+					<li>Growing</li>
 				</defaultToolAssignmentTags>
 			</li>
 		</modExtensions>

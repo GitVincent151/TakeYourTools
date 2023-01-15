@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
 using Verse;
+using Verse.AI;
 
 namespace TakeYourTools
 {
@@ -11,7 +12,7 @@ namespace TakeYourTools
 
         public List<StatModifier> baseWorkStatFactors;
 
-        public List<string> defaultToolAssignmentTags;
+        public List<WorkTypeDef> defaultToolAssignmentTags;
 
         public float toolWearFactor = 1f;
 

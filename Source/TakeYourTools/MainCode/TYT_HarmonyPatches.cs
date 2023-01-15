@@ -28,7 +28,8 @@ namespace TakeYourTools
 
         static TYT_HarmonyPatches()
         {
-            Log.Message($"TYT: TYT_HarmonyPatches - Harmony pathes started STARTED - HELLO ALL!");
+            Log.Message($"TYT: TAKEYOURTOOLS MOD STARTED - HELLO ALL!");
+            Log.Message($"TYT: TYT_HarmonyPatches done");
             Harmony harmonyPatches = new Harmony("GitVincent151.TakeYourTools");
             // HarmonyInstance.DEBUG = true;
             // Automatic patches
@@ -133,128 +134,6 @@ namespace TakeYourTools
             }
             */
         }
-
-        //PawnRenderer
-        [StaticConstructorOnStartup]
-        public static class PawnRendererPatches
-        {
-            [HarmonyPatch(typeof(PawnRenderer))]
-            [HarmonyPatch("CarryWeaponOpenly", MethodType.Normal)]
-            public static class PawnRenderer_CarryWeaponOpenly
-            {
-                [HarmonyPostfix]
-                public static void Postfix(ref bool __result, Pawn ___pawn)
-                {
-                    // Log.Message($"TYT: TYT_HarmonyPatches - PawnRendererPatches {__result}{___pawn.Name}");
-
-                    if (!__result
-                        && TYT_StaticConstructorClass.ToolMemoriesTracker.IsPawnUsingTool(___pawn))
-                    {
-                        Log.Message($"TYT: TYT_HarmonyPatches - PawnRendererPatches");
-                        __result = true;
-                    }
-                }
-            }
-        }
-
-        //FloatMenuMakerMap
-        [StaticConstructorOnStartup]
-        public static class FloatMenuMakerMapPatches
-        {
-            [HarmonyPatch(typeof(FloatMenuMakerMap))]
-            [HarmonyPatch("AddHumanlikeOrders", MethodType.Normal)]
-            public static class FloatMenuMakerMap_AddHumanlikeOrders
-            {
-                [HarmonyTranspiler]
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-                {
-                    Log.Message($"TYT: TYT_HarmonyPatches - FloatMenuMakerMapPatches");
-
-                    MethodInfo playerHome = AccessTools.Property(typeof(Map), "IsPlayerHome").GetGetMethod();
-                    bool replaceCall = !TYT_StaticConstructorClass.UsingCombatExtended;
-                    foreach (CodeInstruction instruction in instructions)
-                    {
-                        if (replaceCall && instruction.Calls(playerHome))
-                        {
-                            instruction.opcode = OpCodes.Ldc_I4_0;
-                            instruction.operand = null;
-                            replaceCall = false;
-                        }
-
-                        yield return instruction;
-                    }
-                }
-            }
-        }
-
-        [StaticConstructorOnStartup]
-        public static class ToilPatches
-        {
-            [HarmonyPatch(typeof(Toil))]
-            [HarmonyPatch(MethodType.Constructor)]
-            public static class Toil_Constructor
-            {
-                [HarmonyPostfix]
-                public static void Postfix(Toil __instance)
-                {
-                    if (__instance == null)
-                        return;
-
-                    __instance.AddPreInitAction(delegate
-                    {
-                        Pawn pawn = __instance.GetActor();
-
-                        if (pawn == null || pawn.Dead || pawn.equipment == null || pawn.inventory == null || !pawn.RaceProps.Humanlike)
-                            return;
-
-                        if (pawn.Drafted)
-                        {
-                            Log.Message($"TYT: TYT_HarmonyPatches - ToilPatches Pawn drafted");
-                            TYT_StaticConstructorClass.ToolMemoriesTracker.ClearMemory(pawn);
-                            return;
-                        }
-                        Log.Message($"TYT: TYT_HarmonyPatches - ToilPatches Pawn {pawn.Name} - {pawn.CurJobDef}");
-
-                        SkillDef activeSkill = pawn.CurJob?.RecipeDef?.workSkill;
-                        if (__instance.activeSkill != null && __instance.activeSkill() != null)
-                             activeSkill = __instance.activeSkill();
-
-                        if (activeSkill != null)
-                        {
-                            Log.Message($"TYT: TYT_HarmonyPatches - ToilPatches - activeSkill {activeSkill.defName}");
-                            TYT_ToolMemory memory = TYT_StaticConstructorClass.ToolMemoriesTracker.GetMemory(pawn);
-
-                            Log.Message($"TYT: TYT_HarmonyPatches - ToilPatches");
-
-                            if (!memory.UpdateSkill(activeSkill))
-                                return;
-
-                            // Don't do it if this job uses weapons (i.e. hunting)
-                            if (activeSkill == SkillDefOf.Shooting || activeSkill == SkillDefOf.Melee)
-                            {
-                                memory.UpdateUsingTool(null, false);
-                            }
-                            // Check currently equipped item
-                            else if (pawn.equipment.Primary != null && TYT_ToolMemoryTracker.HasReleventStatModifiers(pawn.equipment.Primary, activeSkill))
-                            {
-                                memory.UpdateUsingTool(null, true);
-                            }
-                            // Try and find something else in inventory
-                            else
-                            {
-                                memory.UpdateUsingTool(pawn.equipment.Primary, TYT_ToolMemoryTracker.EquipAppropriateTool(pawn, activeSkill));
-                            }
-                        }
-                        else
-                        {
-                            Log.Message($"TYT: TYT_HarmonyPatches - ToilPatches ClearMemory");
-                            TYT_StaticConstructorClass.ToolMemoriesTracker.ClearMemory(pawn);
-                        }
-                    });
-                }
-            }
-        }
-
 
         /*
         public static void Postfix_HandleBlockingThingJob(ref Job __result, Pawn worker)
@@ -557,6 +436,7 @@ namespace TakeYourTools
             }
         }
         */
+
     }
 
 }

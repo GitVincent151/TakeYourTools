@@ -11,11 +11,14 @@ namespace TakeYourTools
     public class TYT_ToolMemoryTracker : WorldComponent
     {
         #region Properties
+        private List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
+        #endregion
+
+        #region Constructor
         public TYT_ToolMemoryTracker(World world) : base(world)
         {
-
+            Log.Message($"TYT: TYT_ToolMemoryTracker - Constructor");
         }
-        private List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
         #endregion
 
         #region Methods
@@ -37,6 +40,7 @@ namespace TakeYourTools
         /// </summary>
         private void CheckToolMemories()
         {
+            Log.Message($"TYT: TYT_ToolMemoryTracker - CheckToolMemories");
             if (toolMemories == null)
                 toolMemories = new List<TYT_ToolMemory>();
         }
@@ -47,12 +51,16 @@ namespace TakeYourTools
         public TYT_ToolMemory GetMemory(Pawn pawn)
         {
             CheckToolMemories();
+
+            Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory");
             TYT_ToolMemory toolMemory = toolMemories.Find(tm => tm != null && tm.pawn == pawn);
             if (toolMemory == null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory init");
-                toolMemory = new TYT_ToolMemory();
-                toolMemory.pawn = pawn;
+                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory for the pawn {pawn.Name}");
+                toolMemory = new TYT_ToolMemory
+                {
+                    pawn = pawn
+                };
                 toolMemories.Add(toolMemory);
             }
             return toolMemory;
@@ -64,10 +72,12 @@ namespace TakeYourTools
         public void ClearMemory(Pawn pawn)
         {
             CheckToolMemories();
+
+            Log.Message($"TYT: TYT_ToolMemoryTracker - ClearMemory for the pawn {pawn.Name}");
             TYT_ToolMemory toolMemory = toolMemories.Find(tm => tm != null && tm.pawn == pawn);
             if (toolMemory != null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - ClearMemory");
+                Log.Message($"TYT: TYT_ToolMemoryTracker - ClearMemory for the pawn {pawn.Name}");
                 Thing previouslyEquipped = toolMemory.PreviousEquipped;
                 if (previouslyEquipped != null && pawn.inventory != null && pawn.inventory.GetDirectlyHeldThings() != null && pawn.inventory.GetDirectlyHeldThings().Contains(previouslyEquipped))
                     TryEquipTool(pawn, previouslyEquipped as ThingWithComps, false);
@@ -83,7 +93,7 @@ namespace TakeYourTools
         /// <returns></returns>
         public static bool EquipAppropriateTool(Pawn pawn, SkillDef skill)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool");            
+            Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool for the pawn {pawn.Name}");            
             if (pawn == null || skill == null)
                 return false;
 
@@ -107,7 +117,7 @@ namespace TakeYourTools
             List<StatModifier> statModifiers = tool.def.equippedStatOffsets;
             if (skill != null && statModifiers != null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - Found relevantSkills...");
+                Log.Message($"TYT: TYT_ToolMemoryTracker - Found relevantSkills for the tool {tool.LabelShort}");
                 foreach (StatModifier statModifier in statModifiers)
                 {
                     List<SkillNeed> skillNeedOffsets = statModifier.stat.skillNeedOffsets;
@@ -159,10 +169,7 @@ namespace TakeYourTools
                 {
                     tool = (ThingWithComps)tool.SplitOff(1);
                 }
-                if (tool.holdingOwner != null)
-                {
-                    tool.holdingOwner.Remove(tool);
-                }
+                tool.holdingOwner?.Remove(tool);
                 pawn.equipment.AddEquipment(tool);
                 if (makeSound)
                     tool.def.soundInteract?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
@@ -178,7 +185,7 @@ namespace TakeYourTools
 
         public bool IsPawnUsingTool(Pawn pawn)
         {
-            //Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool {GetMemory(pawn)?.IsUsingTool}");
+            Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool for the pawn {pawn.Name}");
             return GetMemory(pawn)?.IsUsingTool ?? false;
         }
 

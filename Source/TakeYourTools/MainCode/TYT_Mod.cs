@@ -19,7 +19,8 @@ namespace TakeYourTools
         #region Properties
         public static TYT_ModSettings settings;
         public static TYT_Mod modInstance;
-
+        // ToolMemoryTracker   
+        public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
         #endregion
 
         #region Overide the interface for the mod settings 
@@ -35,7 +36,7 @@ namespace TakeYourTools
         /// </summary>
         public override string SettingsCategory()
         {
-            return "TakeYourTools (TYT): ToolsSettingsCategory".Translate();
+            return "TakeYourTools (TYT): ModSettingsCategory".Translate();
         }
         /// <summary>
         /// Override the window for the mod settings

@@ -2,22 +2,22 @@
 
 namespace TakeYourTools
 {
+    /// <summary>
+    /// Tracker for each pawn with the list of forced tools and the current job assignment
+    /// </summary>
     public class TYT_PawnToolAssignmentTracker : ThingComp
     {
         #region Properties
         private Pawn pawn => (Pawn)parent;
         private TYT_JobToolAssignment curJobToolAssignment;
-        public int nextToolOptimizeTick = -99999;
         public TYT_ToolForcedHandler forcedHandler;
-
+        public int nextToolOptimizeTick = -99999;
         #endregion
-        #region Methods
-        #endregion
-
+        
         #region Constructor
         public override void Initialize(CompProperties props)
         {
-            Log.Message($"TYT: TYT_PawnToolAssignmentTracker - Initialize {pawn.GetUniqueLoadID()}");
+            Log.Message($"TYT: TYT_PawnToolAssignmentTracker for {pawn.GetUniqueLoadID()} initialized");
             // Called once when the ThingComp is instantiated, and called once during loading. Most commonly used to initialise the comp props, but functionally similar to PostMake() so equally suitable for setting up default values.
             base.Initialize(props);
             forcedHandler = new TYT_ToolForcedHandler();

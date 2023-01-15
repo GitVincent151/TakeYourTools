@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Verse;
+using Verse.AI;
 
 namespace TakeYourTools
 {
@@ -12,19 +13,17 @@ namespace TakeYourTools
 
         private bool initialized = false;
         private List<TYT_JobToolAssignment> JobToolAssignments = new List<TYT_JobToolAssignment>();
-        public List<TYT_JobToolAssignment> AllJobToolAssignments =>
-            JobToolAssignments;
+        public List<TYT_JobToolAssignment> AllJobToolAssignments => JobToolAssignments;
                 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="game"></param>
         public TYT_JobToolAssignmentDatabase(Game game)
         {
         }
         
-        public TYT_JobToolAssignment DefaultJobToolAssignment() =>
-           JobToolAssignments.Count == 0 ? MakeNewJobToolAssignment() : JobToolAssignments[0];
+        public TYT_JobToolAssignment DefaultJobToolAssignment() => JobToolAssignments.Count == 0 ? MakeNewJobToolAssignment() : JobToolAssignments[0];
+
         public override void FinalizeInit()
         {
             if (!initialized)
@@ -33,6 +32,7 @@ namespace TakeYourTools
                 initialized = true;
             }
         }
+
         private void GenerateStartingJobToolAssignments()
         {
 
@@ -60,11 +60,11 @@ namespace TakeYourTools
                     continue;
                 else
                 {
-                    foreach (string toolAssignmentTags in toolProperties.defaultToolAssignmentTags)
+                    foreach (WorkTypeDef toolAssignmentTags in toolProperties.defaultToolAssignmentTags)
                     {
                         Log.Message($"TYT: TYT_JobToolAssignmentDatabase - GenerateStartingJobToolAssignments for defaultToolAssignmentTags {toolAssignmentTags}");
                         TYT_JobToolAssignment jobToolAssignment = MakeNewJobToolAssignment();
-                        jobToolAssignment.label = toolAssignmentTags.Translate();
+                        jobToolAssignment.label = toolAssignmentTags.ToString().Translate();
                         jobToolAssignment.filter.SetAllow(tDef, true);
                     }
                     /*

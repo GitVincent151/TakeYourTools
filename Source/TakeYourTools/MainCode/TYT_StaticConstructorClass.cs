@@ -22,24 +22,24 @@ namespace TakeYourTools
     public static class TYT_StaticConstructorClass
     {
         #region Properties
-
-        // Instance of the class
-        //private TYT_StaticConstructorClass _instance;
-        //public TYT_StaticConstructorClass Instance => _instance;
-
         // Patch for "Combat Extended"
         public static bool UsingCombatExtended => ModsConfig.ActiveModsInLoadOrder.Any((ModMetaData m) => m.Name == "Combat Extended");
-
-        // ToolMemoryTracker and Patch   
-        public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
-
         #endregion
-
+        
         #region Constructor
         static TYT_StaticConstructorClass()
         {
-            // Hello
-            Log.Message("TYT: Mod TakeYourTools started");
+
+            // Add ToolAssignmentTracker property to all appropriate pawns
+            foreach (ThingDef tDef in DefDatabase<ThingDef>.AllDefs.Where(t => t.race?.Humanlike == true))
+            {
+                Log.Message("TYT: ToolAssignmentTracker for pawn ready");
+                if (tDef.comps == null)
+                {
+                    tDef.comps = new List<CompProperties>();
+                }
+                tDef.comps.Add(new CompProperties(typeof(TYT_PawnToolAssignmentTracker)));
+            }
 
         }
         #endregion

@@ -13,18 +13,17 @@ namespace TakeYourTools
     public static class TYT_ToolUtility
     {
 
-        public static List<StatDef> ToolStats { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatRelevantForTool()).ToList();
-        public static bool StatRelevantForTool(this StatDef stat)
+        public static List<StatDef> StatDefForPawnWork { get; } = DefDatabase<StatDef>.AllDefsListForReading.Where(s => s.StatRelevantForPawnWork()).ToList();
+        public static bool StatRelevantForPawnWork(this StatDef stat)
         {
-            Log.Message($"TYT: TYT_ToolUtility - StatRelevantForTool StatDef {stat.ToStringSafe()}");
             if (!stat.parts.NullOrEmpty())
                 foreach (StatPart part in stat.parts)
                 {
                     
-                    Log.Message($"TYT: TYT_ToolUtility - StatRelevantForTool stat.parts {part.GetType().FullName}"); 
-                    if (part?.GetType() == typeof(TYT_StatTool))
+                    Log.Message($"TYT: TYT_ToolUtility - Looking for StatRelevantForPawnWork");
+                    if (part?.GetType() == StatCategoryDefOf.PawnWork.GetType())
                     {
-                        Log.Message($"TYT: TYT_ToolUtility - StatsForTool found TYT_StatDefOf {part.GetType().FullName}");
+                        Log.Message($"TYT: TYT_ToolUtility - StatRelevantForPawnWork found stat.parts {part.GetType().FullName}");
                         return true;
                     }
                         
@@ -175,7 +174,7 @@ namespace TakeYourTools
         public static IEnumerable<TYT_ToolThing> BestToolsFor(Pawn pawn)
         {
             Log.Message($"TYT: TYT_ToolUtility - BestToolsFor"); 
-            foreach (StatDef stat in ToolStats)
+            foreach (StatDef stat in StatDefForPawnWork)
             {
                 TYT_ToolThing tool = pawn.GetBestTool(stat);
                 if (tool != null)
