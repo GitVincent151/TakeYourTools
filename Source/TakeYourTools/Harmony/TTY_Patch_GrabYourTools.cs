@@ -6,14 +6,20 @@ using Unity.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace TakeYourTools
 {
     public class TYT_Patch_Pawn_JobTracker_Patches
     {
+        public static JobDef __curJobDef = null;
+        public static Pawn __pawn = null;
+        public static TYT_ToolMemory memory = null;
+        public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
+
         [StaticConstructorOnStartup]
         public static class Pawn_JobTracker_Patches
-        {   
+        {
             [HarmonyPatch(typeof(Pawn_JobTracker))]
             [HarmonyPatch("StartJob")]
 
@@ -22,85 +28,74 @@ namespace TakeYourTools
                 [HarmonyPostfix]
                 public static void Postfix(Pawn_JobTracker __instance)
                 {
-                    if (__instance == null)
-                        return;
+                    //if (TYT_Mod.Instance == null)
+                    //{
+                    //    Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Mod instance not existing");
+                    //    return;
+                    //}
 
-                    Job __job = __instance?.curJob;
-                    JobDriver __curDriver = __instance?.curDriver;
-                    JobDef __curJobDef = __job?.def;
-                    Pawn __pawn = __curDriver?.pawn;
+                    __curJobDef = __instance?.curJob?.def;
+                    __pawn = __instance?.curDriver?.pawn;
 
-                    if (__job != null
-                        && __curDriver != null
-                        && __curJobDef != null
+                    if (__curJobDef != null
                         && __pawn != null
                         && __pawn.Dead != true
                         && __pawn.RaceProps.Humanlike == true
                         )
                     {
-                        
+                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn} will start JobDef {__curJobDef}");
+
                         if (__pawn.Drafted)
                         {
-                            // Init tool memory for new pawn
-                            TYT_Mod.ToolMemoriesTracker.ClearMemory(__pawn);
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Init Memory of the Pawn {__pawn}");
+                            ToolMemoriesTracker.ClearMemory(__pawn);
                             return;
                         }
 
-                        if (!__pawn.CanUseTools())
-                            return;
-                        
-                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn = {__pawn} will start JobDef = {__curJobDef}");
-
-                        if (__curJobDef != null)
+                        memory = ToolMemoriesTracker.GetMemory(__pawn);
+                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> {__pawn} has tool {__pawn.equipment.Primary.def} that is of the type {__pawn.equipment.Primary.def.thingClass}");
+                        if (!memory.UpdateJob(__curJobDef))
                         {
-                            TYT_ToolMemory memory = TYT_Mod.ToolMemoriesTracker.GetMemory(__pawn);
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent");
-
-                            if (!memory.UpdateJob(__curJobDef))
-                            {
-                                Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent0"); 
-                                return;
-                            }
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - UpdateJob true");
-                            // Don't do it if this job uses weapons (i.e. hunting)
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - AttackStatic {JobDefOf.AttackStatic}");
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - __curJobDef {__curJobDef}");
-
-
-
-                            //if (__curJobDef.defName == JobDefOf.AttackStatic.defName || __curJobDef.defName == JobDefOf.AttackMelee.defName)
-                            if (__curJobDef == JobDefOf.Equip)
-                            {
-                                Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent2");     
-                                memory.UpdateUsingTool(null, false);
-
-                            }
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent20");
-                            // Check currently equipped item
-                            //else if (__pawn.equipment.Primary != null && TYT_Mod.ToolMemoriesTracker.HasReleventStatModifiers(__pawn.equipment.Primary, __curJobDef))
-                            //else v
-                            if (TYT_Mod.Instance != null
-                                && __pawn.equipment.Primary != null
-                                && TYT_Mod.ToolMemoriesTracker.HasReleventStatModifiers(__pawn.equipment.Primary, __curJobDef))
-                            {
-                                Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent3"); 
-                                memory.UpdateUsingTool(null, true);
-                                Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent4");
-                            }
-                            // Try and find something else in inventory
-                            else
-                            {
-                                Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent5");
-                                //memory.UpdateUsingTool(__pawn.equipment.Primary, TYT_Mod.ToolMemoriesTracker.EquipAppropriateWeapon(__pawn, __curJobDef));
-                            }
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent6");
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Job was not updated, we keep the tool");
+                            return;
                         }
+
+                        // Don't do it if this job uses weapons (i.e. hunting)
+                        if (__curJobDef == JobDefOf.AttackStatic || __curJobDef == JobDefOf.AttackMelee)
+                        {
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Using Weapons, we do nothing");
+                            memory.UpdateUsingTool(null, false);
+
+                        }
+                        // Check currently equipped item
+                        //else if (__pawn.equipment.Primary != null && TYT_Mod.ToolMemoriesTracker.HasReleventStatModifiers(__pawn.equipment.Primary, __curJobDef))
+                        //else v
+                        else if (
+                            //TYT_Mod.Instance != null
+                            __pawn.equipment.Primary != null
+                        //&& 
+                            && __pawn.equipment.Primary.def is ThingDef
+                            && __pawn.equipment.Primary.def.thingClass == typeof(TYT_ToolThing)
+                            && ToolMemoriesTracker.HasAppropriatedToolsForJob((TYT_ToolThing)__pawn.equipment.Primary, __curJobDef)
+                            )
+                        {
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Check currently equipped item {__pawn.equipment.Primary}");
+                            memory.UpdateUsingTool(null, true);
+                        }
+                        // Try and find something else in inventory
                         else
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent7"); 
-                            TYT_Mod.ToolMemoriesTracker.ClearMemory(__pawn);
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent8");
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> EquipAppropriateTools");
+                            //memory.UpdateUsingTool(__pawn.equipment.Primary, TYT_Mod.ToolMemoriesTracker.EquipAppropriateWeapon(__pawn, __curJobDef));
                         }
+                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> End");
+                        //    }
+                        //    else
+                        //    {
+                        //        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent7"); 
+                        //        TYT_Mod.ToolMemoriesTracker.ClearMemory(__pawn);
+                        //        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent8");
+                        //    }
 
                         /*
 

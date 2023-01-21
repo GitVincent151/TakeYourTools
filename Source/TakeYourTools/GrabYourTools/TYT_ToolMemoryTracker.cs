@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using RimWorld;
@@ -11,7 +12,7 @@ namespace TakeYourTools
     public class TYT_ToolMemoryTracker : WorldComponent
     {
         #region Properties
-        private List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
+        private static List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
 
         #endregion
 
@@ -19,6 +20,8 @@ namespace TakeYourTools
         public TYT_ToolMemoryTracker(World world) : base(world)
         {
             Log.Message($"TYT: TYT_ToolMemoryTracker - Constructor");
+
+
         }
         #endregion
 
@@ -28,6 +31,7 @@ namespace TakeYourTools
         /// </summary>
         public override void ExposeData()
         {
+            Log.Message($"TYT: TYT_ToolMemoryTracker - ExposeData --> Add existing memories from save in the memory tracker");
             if (Scribe.mode == LoadSaveMode.Saving)
             {
                 toolMemories = toolMemories.Where(memory => memory != null && memory.pawn != null && !memory.pawn.Dead && !memory.pawn.Destroyed && memory.pawn.Spawned).ToList();
@@ -41,9 +45,12 @@ namespace TakeYourTools
         /// </summary>
         private void CheckToolMemories()
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - CheckToolMemories");
             if (toolMemories == null)
+            {
+                Log.Message($"TYT: TYT_ToolMemoryTracker - CheckToolMemories --> No memory list found in the game"); 
                 toolMemories = new List<TYT_ToolMemory>();
+            }
+                
         }
 
         /// <summary>
@@ -53,17 +60,15 @@ namespace TakeYourTools
         {
             CheckToolMemories();
 
-            Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory");
             TYT_ToolMemory toolMemory = toolMemories.Find(tm => tm != null && tm.pawn == _pawn);
             if (toolMemory == null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory for the pawn {_pawn.Name}");
                 toolMemory = new TYT_ToolMemory
                 {
                     pawn = _pawn
                 };
                 toolMemories.Add(toolMemory);
-                Log.Message($"TYT: TYT_ToolMemoryTracker - pawn nenory created for the pawn {_pawn.Name}");
+                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory --> Pawn nenory created for the pawn {_pawn.Name}");
             }
             return toolMemory;
         }        
@@ -87,49 +92,50 @@ namespace TakeYourTools
             }
         }
 
-        /// <summary>
-        /// Identify 
-        /// </summary>
-        public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
-        {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool for the pawn {pawn.Name}");            
-            if (pawn == null || _jobDef == null)
-                return false;
+        ///// <summary>
+        ///// Identify 
+        ///// </summary>
+        //public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
+        //{
+        //    Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool for the pawn {pawn.Name}");            
+        //    if (pawn == null || _jobDef == null)
+        //        return false;
 
-            ThingOwner heldThingsOwner = pawn.inventory.GetDirectlyHeldThings();
-            List<Thing> toolsHeld = heldThingsOwner.Where(thing => thing.def.IsTool()).ToList();
-            foreach (Thing tool in toolsHeld)
-            {
-                if (HasReleventStatModifiers(tool, _jobDef))
-                {
-                    return TryEquipTool(pawn, tool as ThingWithComps);
-                }
-            }
-            return false;
-        }
+        //    ThingOwner heldThingsOwner = pawn.inventory.GetDirectlyHeldThings();
+        //    List<Thing> toolsHeld = heldThingsOwner.Where(thing => thing.def.IsTool()).ToList();
+        //    foreach (Thing tool in toolsHeld)
+        //    {
+        //        if (HasReleventStatModifiers(tool, _jobDef))
+        //        {
+        //            return TryEquipTool(pawn, tool as ThingWithComps);
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        public bool HasReleventStatModifiers(Thing tool, JobDef _jobDef)
+        public bool HasAppropriatedToolsForJob(TYT_ToolThing tool, JobDef _jobDef)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - HasReleventStatModifiers - start");
+            Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> tool {tool.Label} JobDef {_jobDef.defName}");
 
             if (tool == null)
                 return false;
 
             //List<StatModifier> statModifiers = tool.def.equippedStatOffsets;
-            List<JobDef> jobDefList = tool.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
-
-            if (_jobDef != null && jobDefList != null)
+            //List<JobDef> jobDefList = tool.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
+            Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Vincent 31");
+            //if (_jobDef != null && jobDefList != null)
+            if (_jobDef != null && tool.DefaultToolAssignmentTags != null)
             {
                 
 
-                if (jobDefList.Contains(_jobDef))
+                if (tool.DefaultToolAssignmentTags.Contains(_jobDef))
                 {
-                    Log.Message($"TYT: TYT_ToolMemoryTracker - Found relevantSkills for the tool {tool.LabelShort}");
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Found relevantSkills for the tool {tool.LabelShort}");
                     return true;
                 }
                 else
                 {
-                    Log.Message($"TYT: TYT_ToolMemoryTracker - Didn´t found relevantSkills for the tool {tool.LabelShort}");
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Didn´t found relevantSkills for the tool {tool.LabelShort}");
                 }
 
               

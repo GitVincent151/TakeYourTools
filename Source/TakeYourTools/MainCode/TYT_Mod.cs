@@ -18,43 +18,43 @@ namespace TakeYourTools
     public class TYT_Mod : Mod
     {
         #region Properties
-        public static TYT_Mod modInstance;
-        public static TYT_Mod Instance => modInstance;
-
-
-        // Mod settings
-        public static TYT_ModSettings settings;
-        // ToolMemoryTracker   
-        public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
-        // Tool utility with list of tools
-        //public static List<TYT_ToolThing> listofToolThinginGame = new List<TYT_ToolThing>();
+ //       public static TYT_Mod modInstance;
+        public static TYT_Mod Instance; // Mod instance
+        
+        public static TYT_ModSettings ModSettings; // Mod settings
+        public static List<TYT_ToolThing> ListofToolsInGame = new List<TYT_ToolThing>(); // List of tools in the game
+        //public static TYT_ToolMemoryTracker ToolMemoryTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>(); // ToolMemoryTracker        
         #endregion
 
-        #region Overide the interface for the mod settings 
+        #region Methods
         /// <summary>
-        /// Init the TYT_Mod class for the mod settings
+        /// A mandatory constructor which resolves the reference to our settings.
         /// </summary>        
         public TYT_Mod(ModContentPack content) : base(content)
         {
-            GetSettings<TYT_ModSettings>();
+            Log.Message($"TYT: TAKEYOURTOOLS MOD STARTED - HELLO ALL!"); 
 
+            Instance = this;
+
+            ModSettings = GetSettings<TYT_ModSettings>();
+            //toolMemoryTracker = Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
         }
-        /// <summary>
-        /// Translate the setting category
-        /// </summary>
-        public override string SettingsCategory()
-        {
-            return "TakeYourTools (TYT): ModSettingsCategory".Translate();
-        }
+
+        ///// <summary>
+        ///// Translate the setting category
+        ///// </summary>
+        //public override string SettingsCategory()
+        //{
+        //    return "TakeYourTools (TYT): ModSettingsCategory".Translate();
+        //}
+
         /// <summary>
         /// Override the window for the mod settings
         /// </summary>
-        /// <param name="inRect"></param>
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            GetSettings<TYT_ModSettings>().DoWindowContents(inRect);
+            ModSettings.DoWindowContents(inRect);
         }
         #endregion
-
     }
 }

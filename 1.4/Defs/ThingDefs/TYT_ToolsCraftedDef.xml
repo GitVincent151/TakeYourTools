@@ -25,6 +25,7 @@
 				<defaultToolAssignmentTags>
 					<li>CutPlant</li>
 					<li>CutPlantDesignated</li>
+					<li>HarvestDesignated</li>
 				</defaultToolAssignmentTags>
 				<toolWearFactor>0.25</toolWearFactor>
 			</li>

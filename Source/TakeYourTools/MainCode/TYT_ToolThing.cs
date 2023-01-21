@@ -14,6 +14,9 @@ using static UnityEngine.GridBrushBase;
 
 namespace TakeYourTools
 {
+    /// <summary>
+    /// This new class TYT_ToolThing is generated automatically using the DEF in XML files
+    /// </summary>
     public class TYT_ToolThing : ThingWithComps
     {
         #region Properties

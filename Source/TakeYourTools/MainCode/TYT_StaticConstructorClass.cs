@@ -31,8 +31,8 @@ namespace TakeYourTools
         static TYT_StaticConstructorClass()
         {
 
-            // Needed?
-            Log.Message($"TYT: TYT_StaticConstructorClass --> Checking Def");
+            // Use this to work on DEF
+            Log.Message($"TYT: TYT_Mod - TYT_StaticConstructorClass --> Static Constructor started");
 
             /*
             // Add ToolAssignmentTracker property to all appropriate pawns

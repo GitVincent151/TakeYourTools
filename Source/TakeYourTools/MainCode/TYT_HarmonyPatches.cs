@@ -28,13 +28,12 @@ namespace TakeYourTools
 
         static TYT_HarmonyPatches()
         {
-            Log.Message($"TYT: TAKEYOURTOOLS MOD STARTED - HELLO ALL!");
-            Log.Message($"TYT: TYT_HarmonyPatches done");
             Harmony harmonyPatches = new Harmony("GitVincent151.TakeYourTools");
             // HarmonyInstance.DEBUG = true;
+
             // Automatic patches
             harmonyPatches.PatchAll(Assembly.GetExecutingAssembly());
-
+            Log.Message($"TYT: TYT_HarmonyPatches - Harmony --> Automatic patches done");
             /*
 
             // Manual patches

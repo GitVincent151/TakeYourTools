@@ -44,7 +44,8 @@ namespace TakeYourTools
             return def.IsTool();
         }
         public static bool IsTool(this BuildableDef def) =>
-            def is ThingDef tDef && tDef.thingClass == typeof(TYT_ToolProperties) && tDef.HasModExtension<TYT_ToolProperties>();
+            def is ThingDef tDef && tDef.thingClass == typeof(TYT_ToolProperties);
+        //&& tDef.HasModExtension<TYT_ToolProperties>();
 
         /// <summary>
         /// Generate report for tool properties

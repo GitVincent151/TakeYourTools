@@ -31,17 +31,16 @@ namespace TakeYourTools
 
         public bool UpdateJob(JobDef _job)
         {
-            Log.Message($"TYT: TYT_ToolMemory - UpdateJob {_job}");
             if (lastCheckedJob == null)
             {
                 lastCheckedJob = _job;
-                Log.Message($"TYT: TYT_ToolMemory - UpdateJob Vincent10");
+                Log.Message($"TYT: TYT_ToolMemory - UpdateJob --> Init of the job in the memory");
                 return true;
             }
             else if (lastCheckedJob != _job)
             {
                 lastCheckedJob = _job;
-                Log.Message($"TYT: TYT_ToolMemory - UpdateJob Vincent8");
+                Log.Message($"TYT: TYT_ToolMemory - UpdateJob --> Update of the job {_job} in the memory");
                 return true;
             }
             return false;            
