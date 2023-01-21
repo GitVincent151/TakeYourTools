@@ -28,12 +28,6 @@ namespace TakeYourTools
                 [HarmonyPostfix]
                 public static void Postfix(Pawn_JobTracker __instance)
                 {
-                    //if (TYT_Mod.Instance == null)
-                    //{
-                    //    Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Mod instance not existing");
-                    //    return;
-                    //}
-
                     __curJobDef = __instance?.curJob?.def;
                     __pawn = __instance?.curDriver?.pawn;
 
@@ -43,20 +37,21 @@ namespace TakeYourTools
                         && __pawn.RaceProps.Humanlike == true
                         )
                     {
-                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn} will start JobDef {__curJobDef}");
-
                         if (__pawn.Drafted)
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Init Memory of the Pawn {__pawn}");
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn} has been called for combat and will not take the tools");
+                            // Vincent --> Drop the tools
                             ToolMemoriesTracker.ClearMemory(__pawn);
                             return;
                         }
 
                         memory = ToolMemoriesTracker.GetMemory(__pawn);
-                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> {__pawn} has tool {__pawn.equipment.Primary.def} that is of the type {__pawn.equipment.Primary.def.thingClass}");
+                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn} will start JobDef {__curJobDef}");
+
+                        // This job is already activ by the pawn
                         if (!memory.UpdateJob(__curJobDef))
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Job was not updated, we keep the tool");
+                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Job was not updated, we won´t change anything");
                             return;
                         }
 
@@ -68,62 +63,42 @@ namespace TakeYourTools
 
                         }
                         // Check currently equipped item
-                        //else if (__pawn.equipment.Primary != null && TYT_Mod.ToolMemoriesTracker.HasReleventStatModifiers(__pawn.equipment.Primary, __curJobDef))
-                        //else v
                         else if (
-                            //TYT_Mod.Instance != null
                             __pawn.equipment.Primary != null
-                        //&& 
                             && __pawn.equipment.Primary.def is ThingDef
                             && __pawn.equipment.Primary.def.thingClass == typeof(TYT_ToolThing)
                             && ToolMemoriesTracker.HasAppropriatedToolsForJob((TYT_ToolThing)__pawn.equipment.Primary, __curJobDef)
                             )
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Check currently equipped item {__pawn.equipment.Primary}");
+                            // Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> {__pawn} has tool {__pawn.equipment.Primary.def} that is of the type {__pawn.equipment.Primary.def.thingClass}");
                             memory.UpdateUsingTool(null, true);
                         }
                         // Try and find something else in inventory
                         else
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> EquipAppropriateTools");
-                            //memory.UpdateUsingTool(__pawn.equipment.Primary, TYT_Mod.ToolMemoriesTracker.EquipAppropriateWeapon(__pawn, __curJobDef));
+                            // Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> EquipAppropriateTools");
+                            memory.UpdateUsingTool(__pawn.equipment.Primary, ToolMemoriesTracker.EquipAppropriateTool(__pawn, __curJobDef));
                         }
-                        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> End");
-                        //    }
-                        //    else
-                        //    {
-                        //        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent7"); 
-                        //        TYT_Mod.ToolMemoriesTracker.ClearMemory(__pawn);
-                        //        Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob Vincent8");
-                        //    }
-
-                        /*
-
-                        //if (TYT_Mod.listofToolThinginGame.Contains())
-
-
-                        // Look for better alternative tools to what the colonist currently has, based on what stats are relevant to the work types the colonist is assigned to
-                        Log.Message($"TYT: TYT_ToolUtility - GetBestTool");
-
-
-                        TYT_ToolThing tool = null;
-
-                        List<Thing> usableTools = __pawn.GetAllUsableTools().ToList();
-                        foreach (TYT_ToolThing curTool in usableTools.Cast<TYT_ToolThing>())
-                        {
-                            foreach (JobDef curToolJobDef in curTool.DefaultToolAssignmentTags)
-                            {
-                                if (curToolJobDef.defName == __curJobDef.defName)
-                                {
-                                    tool = curTool;
-                                    Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Found tool --> label = {tool.Label}");
-
-                                }
-                            }
-                        }
-                        */
+                        // Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> End");
                     }
+                    
+                }
+            }
+        }
 
+        //PawnRenderer
+        [StaticConstructorOnStartup]
+        public static class Pawn_JovRenderer_Patches
+        {
+            [HarmonyPatch(typeof(PawnRenderer))]
+            [HarmonyPatch("CarryWeaponOpenly", MethodType.Normal)]
+            public static class PawnRenderer_CarryWeaponOpenly
+            {
+                [HarmonyPostfix]
+                public static void Postfix(ref bool __result, Pawn ___pawn)
+                {
+                    if (!__result && ToolMemoriesTracker.IsPawnUsingTool(___pawn))
+                        __result = true;
                 }
             }
         }

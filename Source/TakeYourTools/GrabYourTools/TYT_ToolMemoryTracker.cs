@@ -92,85 +92,45 @@ namespace TakeYourTools
             }
         }
 
-        ///// <summary>
-        ///// Identify 
-        ///// </summary>
-        //public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
-        //{
-        //    Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool for the pawn {pawn.Name}");            
-        //    if (pawn == null || _jobDef == null)
-        //        return false;
-
-        //    ThingOwner heldThingsOwner = pawn.inventory.GetDirectlyHeldThings();
-        //    List<Thing> toolsHeld = heldThingsOwner.Where(thing => thing.def.IsTool()).ToList();
-        //    foreach (Thing tool in toolsHeld)
-        //    {
-        //        if (HasReleventStatModifiers(tool, _jobDef))
-        //        {
-        //            return TryEquipTool(pawn, tool as ThingWithComps);
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        public bool HasAppropriatedToolsForJob(TYT_ToolThing tool, JobDef _jobDef)
+        /// <summary>
+        /// Look if a tool is available that is appropriate for the JobDef 
+        /// </summary>
+        public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> tool {tool.Label} JobDef {_jobDef.defName}");
-
-            if (tool == null)
+                   
+            if (pawn == null || _jobDef == null)
                 return false;
 
-            //List<StatModifier> statModifiers = tool.def.equippedStatOffsets;
-            //List<JobDef> jobDefList = tool.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
-            Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Vincent 31");
-            //if (_jobDef != null && jobDefList != null)
-            if (_jobDef != null && tool.DefaultToolAssignmentTags != null)
+            ThingOwner heldThingsOwner = pawn.inventory.GetDirectlyHeldThings();
+            List<Thing> toolsHeld = heldThingsOwner.Where(thing => thing.def.thingClass == typeof(TYT_ToolThing)).ToList();
+            foreach (TYT_ToolThing tool in toolsHeld)
             {
-                
+                if (HasAppropriatedToolsForJob(tool, _jobDef))
+                {
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool --> Pawn {pawn.Name} takes tool {tool.Label} for JobDef {_jobDef}");
+                    return TryEquipTool(pawn, tool as ThingWithComps);
+                }
+            }
+            Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool --> Pawn {pawn.Name} needs other tool for JobDef {_jobDef}");
+            return false;
+        }
 
+        
+        /// <summary>
+        /// Check if the tool is appropriate for the JobDef
+        /// </summary>
+        public bool HasAppropriatedToolsForJob(TYT_ToolThing tool, JobDef _jobDef)
+        {
+            if (tool == null || _jobDef == null)
+                return false;
+
+            if (tool.DefaultToolAssignmentTags != null)
+            {
                 if (tool.DefaultToolAssignmentTags.Contains(_jobDef))
                 {
-                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Found relevantSkills for the tool {tool.LabelShort}");
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> the tool {tool.LabelShort} is appropriate for the job {_jobDef}");
                     return true;
                 }
-                else
-                {
-                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> Didn´t found relevantSkills for the tool {tool.LabelShort}");
-                }
-
-              
-                /*
-                foreach (JobDef _job in jobDefList)
-                    
-                foreach (StatModifier statModifier in statModifiers)
-                {
-                    List<SkillNeed> skillNeedOffsets = statModifier.stat.skillNeedOffsets;
-                    List<SkillNeed> skillNeedFactors = statModifier.stat.skillNeedFactors;
-                    if (skillNeedOffsets != null)
-                    {
-                        Log.Message($"TYT: TYT_ToolMemoryTracker - Found skillNeedOffsets...");
-                        foreach (SkillNeed skillNeed in skillNeedOffsets)
-                        {
-                            if (skill == skillNeed.skill)
-                            {
-                                //Logger.MessageFormat(this, "{0} has {1}, relevant to {2}", tool.Label, statModifier.stat.label, skillNeed.skill);
-                                return true;
-                            }
-                        }
-                    }
-                    if (skillNeedFactors != null)
-                    {
-                        foreach (SkillNeed skillNeed in skillNeedFactors)
-                        {
-                            if (skill == skillNeed.skill)
-                            {
-                                //Logger.MessageFormat(this, "{0} has {1}, relevant to {2}", tool.Label, statModifier.stat.label, skillNeed.skill);
-                                return true;
-                            }
-                        }
-                    }
-                }
-                */
             }
             
             return false;
@@ -178,7 +138,7 @@ namespace TakeYourTools
 
         public static bool TryEquipTool(Pawn pawn, ThingWithComps tool, bool makeSound = true)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - TryEquipTool");
+            //Log.Message($"TYT: TYT_ToolMemoryTracker - TryEquipTool");
             if (pawn == null || tool == null)
                 return false;
 
@@ -211,7 +171,7 @@ namespace TakeYourTools
 
         public bool IsPawnUsingTool(Pawn pawn)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool for the pawn {pawn.Name}");
+            // Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool for the pawn {pawn.Name}");
             return GetMemory(pawn)?.IsUsingTool ?? false;
         }
 
