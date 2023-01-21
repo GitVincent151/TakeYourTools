@@ -49,24 +49,25 @@ namespace TakeYourTools
         /// <summary>
         /// Get ToolMemory for a pawn
         /// </summary>
-        public TYT_ToolMemory GetMemory(Pawn pawn)
+        public TYT_ToolMemory GetMemory(Pawn _pawn)
         {
             CheckToolMemories();
 
             Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory");
-            TYT_ToolMemory toolMemory = toolMemories.Find(tm => tm != null && tm.pawn == pawn);
+            TYT_ToolMemory toolMemory = toolMemories.Find(tm => tm != null && tm.pawn == _pawn);
             if (toolMemory == null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory for the pawn {pawn.Name}");
+                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory for the pawn {_pawn.Name}");
                 toolMemory = new TYT_ToolMemory
                 {
-                    pawn = pawn
+                    pawn = _pawn
                 };
                 toolMemories.Add(toolMemory);
+                Log.Message($"TYT: TYT_ToolMemoryTracker - pawn nenory created for the pawn {_pawn.Name}");
             }
             return toolMemory;
-        }
-
+        }        
+        
         /// <summary>
         /// Clear ToolMemory for a pawn
         /// </summary>
@@ -89,20 +90,17 @@ namespace TakeYourTools
         /// <summary>
         /// Identify 
         /// </summary>
-        /// <param name="pawn"></param>
-        /// <param name="skill"></param>
-        /// <returns></returns>
-        public static bool EquipAppropriateTool(Pawn pawn, SkillDef skill)
+        public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
         {
             Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool for the pawn {pawn.Name}");            
-            if (pawn == null || skill == null)
+            if (pawn == null || _jobDef == null)
                 return false;
 
             ThingOwner heldThingsOwner = pawn.inventory.GetDirectlyHeldThings();
             List<Thing> toolsHeld = heldThingsOwner.Where(thing => thing.def.IsTool()).ToList();
             foreach (Thing tool in toolsHeld)
             {
-                if (HasReleventStatModifiers(tool, skill))
+                if (HasReleventStatModifiers(tool, _jobDef))
                 {
                     return TryEquipTool(pawn, tool as ThingWithComps);
                 }
@@ -110,15 +108,34 @@ namespace TakeYourTools
             return false;
         }
 
-        public static bool HasReleventStatModifiers(Thing tool, SkillDef skill)
+        public bool HasReleventStatModifiers(Thing tool, JobDef _jobDef)
         {
+            Log.Message($"TYT: TYT_ToolMemoryTracker - HasReleventStatModifiers - start");
+
             if (tool == null)
                 return false;
 
-            List<StatModifier> statModifiers = tool.def.equippedStatOffsets;
-            if (skill != null && statModifiers != null)
+            //List<StatModifier> statModifiers = tool.def.equippedStatOffsets;
+            List<JobDef> jobDefList = tool.def.GetModExtension<TYT_ToolProperties>().defaultToolAssignmentTags;
+
+            if (_jobDef != null && jobDefList != null)
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - Found relevantSkills for the tool {tool.LabelShort}");
+                
+
+                if (jobDefList.Contains(_jobDef))
+                {
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - Found relevantSkills for the tool {tool.LabelShort}");
+                    return true;
+                }
+                else
+                {
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - Didn´t found relevantSkills for the tool {tool.LabelShort}");
+                }
+
+              
+                /*
+                foreach (JobDef _job in jobDefList)
+                    
                 foreach (StatModifier statModifier in statModifiers)
                 {
                     List<SkillNeed> skillNeedOffsets = statModifier.stat.skillNeedOffsets;
@@ -147,7 +164,9 @@ namespace TakeYourTools
                         }
                     }
                 }
+                */
             }
+            
             return false;
         }
 

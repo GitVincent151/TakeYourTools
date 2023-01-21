@@ -181,7 +181,25 @@ namespace TakeYourTools
                 }
             }
         }
+        /*
+        public static List<StatDef> AssignedToolRelevantWorkGiversStatDefs(this Pawn pawn)
+        {
+            List<StatDef> resultList = new List<StatDef>();
+            foreach (WorkGiver giver in pawn.AssignedToolRelevantWorkGivers())
+                foreach (StatDef stat in giver.def.GetModExtension<WorkGiverExtension>().requiredStats)
+                    if (!resultList.Contains(stat))
+                        resultList.Add(stat);
+            return resultList;
+        }
 
+        public static bool NeedsSurvivalTool(this Pawn pawn, SurvivalTool tool)
+        {
+            foreach (StatDef stat in pawn.AssignedToolRelevantWorkGiversStatDefs())
+                if (StatUtility.StatListContains(tool.WorkStatFactors.ToList(), stat))
+                    return true;
+            return false;
+        }
+        */
         public static TYT_ToolThing GetBestTool(this Pawn pawn, StatDef stat)
         {
             Log.Message($"TYT: TYT_ToolUtility - GetBestTool"); 

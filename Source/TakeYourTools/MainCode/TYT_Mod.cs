@@ -18,8 +18,12 @@ namespace TakeYourTools
     public class TYT_Mod : Mod
     {
         #region Properties
-        public static TYT_ModSettings settings;
         public static TYT_Mod modInstance;
+        public static TYT_Mod Instance => modInstance;
+
+
+        // Mod settings
+        public static TYT_ModSettings settings;
         // ToolMemoryTracker   
         public static TYT_ToolMemoryTracker ToolMemoriesTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>();
         // Tool utility with list of tools
@@ -33,6 +37,7 @@ namespace TakeYourTools
         public TYT_Mod(ModContentPack content) : base(content)
         {
             GetSettings<TYT_ModSettings>();
+
         }
         /// <summary>
         /// Translate the setting category

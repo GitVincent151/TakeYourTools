@@ -10,7 +10,7 @@ namespace TakeYourTools
 
         public Pawn pawn = null;
 
-        private SkillDef lastCheckedSkill = null;
+        private JobDef lastCheckedJob = null;
         
         private Thing previousEquipped = null;
         public Thing PreviousEquipped => previousEquipped;
@@ -24,19 +24,27 @@ namespace TakeYourTools
         public void ExposeData()
         {
             Scribe_References.Look(ref pawn, "pawn");
-            Scribe_Defs.Look(ref lastCheckedSkill, "lastCheckedSkill");
+            Scribe_Defs.Look(ref lastCheckedJob, "lastCheckedJob");
             Scribe_Values.Look(ref usingTool, "usingTool");
             Scribe_References.Look(ref previousEquipped, "previousEquipped");
         }
 
-        public bool UpdateSkill(SkillDef skill)
+        public bool UpdateJob(JobDef _job)
         {
-            if (lastCheckedSkill != skill)
+            Log.Message($"TYT: TYT_ToolMemory - UpdateJob {_job}");
+            if (lastCheckedJob == null)
             {
-                lastCheckedSkill = skill;
+                lastCheckedJob = _job;
+                Log.Message($"TYT: TYT_ToolMemory - UpdateJob Vincent10");
                 return true;
             }
-            return false;
+            else if (lastCheckedJob != _job)
+            {
+                lastCheckedJob = _job;
+                Log.Message($"TYT: TYT_ToolMemory - UpdateJob Vincent8");
+                return true;
+            }
+            return false;            
         }
 
         public void UpdateUsingTool(Thing equipped, bool isUsingTool)
