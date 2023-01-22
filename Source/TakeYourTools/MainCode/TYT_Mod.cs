@@ -19,10 +19,9 @@ namespace TakeYourTools
     {
         #region Properties
  //       public static TYT_Mod modInstance;
-        public static TYT_Mod Instance; // Mod instance
-        
+        public static TYT_Mod Instance; // Mod instance used to be sure the class instance is existing      
         public static TYT_ModSettings ModSettings; // Mod settings
-        public static List<TYT_ToolThing> ListofToolsInGame = new List<TYT_ToolThing>(); // List of tools in the game
+        //public static List<TYT_ToolThing> ListofToolsInGame = new List<TYT_ToolThing>(); // List of tools in the game
         //public static TYT_ToolMemoryTracker ToolMemoryTracker => Current.Game.World.GetComponent<TYT_ToolMemoryTracker>(); // ToolMemoryTracker        
         #endregion
 

@@ -30,7 +30,6 @@ namespace TakeYourTools
             return false;
         }
         
-
         /// <summary>
         /// Check if the Def is a tool
         /// </summary>
