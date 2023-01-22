@@ -19,7 +19,7 @@ namespace TakeYourTools
         #region Constructor
         public TYT_ToolMemoryTracker(World world) : base(world)
         {
-            Log.Message($"TYT: TYT_ToolMemoryTracker - Constructor");
+            // Log.Message($"TYT: TYT_ToolMemoryTracker - Constructor");
         }
         #endregion
 
@@ -32,7 +32,7 @@ namespace TakeYourTools
             if (Scribe.mode == LoadSaveMode.Saving)
             {
                 toolMemories = toolMemories.Where(memory => memory != null && memory.pawnMemory != null && !memory.pawnMemory.Dead && !memory.pawnMemory.Destroyed && memory.pawnMemory.Spawned).ToList();
-                Log.Message($"TYT: TYT_ToolMemoryTracker - ExposeData --> Add existing memories for Pawns from save in the memory tracker");
+                // Log.Message($"TYT: TYT_ToolMemoryTracker - ExposeData --> Save existing memories for Pawns still existing");
             }
             Scribe_Collections.Look(ref toolMemories, "toolMemories", LookMode.Deep);
         }
@@ -53,7 +53,7 @@ namespace TakeYourTools
                     pawnMemory = pawn
                 };
                 toolMemories.Add(toolMemory);
-                Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory --> Pawn menory created for the pawn {toolMemory.pawnMemory.LabelShort}");
+                // Log.Message($"TYT: TYT_ToolMemoryTracker - GetMemory --> Pawn menory created for the pawn {toolMemory.pawnMemory.LabelShort}");
             }
 
             return toolMemory;
@@ -71,24 +71,23 @@ namespace TakeYourTools
         }
 
         /// <summary>
-        /// Update JobDef for a pawn 
+        /// Check if pawn is using a tool TYT_ToolThing
         /// </summary>
         public bool IsPawnUsingTool(Pawn pawn)
         {
             if (pawn == null)
                 return false;
 
-            TYT_ToolMemory toolMemory = GetMemory(pawn);
             if (pawn.equipment.Primary != null && pawn.equipment.Primary.def.thingClass == typeof(TYT_ToolThing))
             {
-                // Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool --> Pawn  {toolMemory.pawnMemory.LabelShort} is using a tool TYT_ToolThing {pawn.equipment.Primary.def.defName}");
+                // Log.Message($"TYT: TYT_ToolMemoryTracker - IsPawnUsingTool --> Pawn {pawn.LabelShort} is using a tool TYT_ToolThing {pawn.equipment.Primary.def.defName}");
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Load privious equipped Thing
+        /// Restore previous equipped Thing
         /// </summary>
         public void RestorePreviousEquippedTool(Pawn pawn)
         {
@@ -98,10 +97,9 @@ namespace TakeYourTools
             TYT_ToolMemory toolMemory = GetMemory(pawn);
             if (toolMemory.GetPreviousEquippedTool() != null && pawn.inventory != null && pawn.inventory.GetDirectlyHeldThings() != null && pawn.inventory.GetDirectlyHeldThings().Contains(toolMemory.GetPreviousEquippedTool()))
             {
-                Log.Message($"TYT: TYT_ToolMemoryTracker - RestorePreviousEquippedTool --> Pawn {pawn.LabelShort} will try to take the ThingWithComps {toolMemory.GetPreviousEquippedTool().LabelShort}");
+                // Log.Message($"TYT: TYT_ToolMemoryTracker - RestorePreviousEquippedTool --> Pawn {pawn.LabelShort} will try to take the ThingWithComps {toolMemory.GetPreviousEquippedTool().LabelShort}");
                 if (TryEquipTool(pawn, toolMemory.GetPreviousEquippedTool() as ThingWithComps, false))
                     toolMemory.ResetMemoryOfPawn();
-
             }
         }
 
@@ -117,7 +115,7 @@ namespace TakeYourTools
             {
                 if (tool.DefaultToolAssignmentTags.Contains(_jobDef))
                 {
-                    Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> the tool {tool.LabelShort} is appropriate for the job {_jobDef}");
+                    // Log.Message($"TYT: TYT_ToolMemoryTracker - HasAppropriatedToolsForJob --> the tool {tool.LabelShort} is appropriate for the job {_jobDef}");
                     return true;
                 }
             }
@@ -140,7 +138,30 @@ namespace TakeYourTools
                     return TryEquipTool(pawn, tool as ThingWithComps);
                 }
             }
-            // Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool --> Pawn {pawn.LabelShort} needs other tool for JobDef {_jobDef}");
+            return false;
+        }
+
+        /// <summary>
+        /// Look if a tool is available in the inventory of the pawn that is appropriate for the JobDef 
+        /// </summary>
+        public bool SearchAppropriateTool(Pawn pawn, JobDef _jobDef)
+        {
+            if (pawn == null || _jobDef == null)
+                return false;
+
+            ThingOwner thingOwner = Find.CurrentMap.GetDirectlyHeldThings();
+            Log.Message($"TYT: TYT_ToolMemoryTracker - SearchAppropriateTool --> Pawn {pawn.LabelShort} will search tool for JobDef {_jobDef}");
+            foreach (TYT_ToolThing tool in thingOwner.Where(thing => thing.def.thingClass == typeof(TYT_ToolThing)).ToList().Cast<TYT_ToolThing>())
+            {
+                if (
+                    HasAppropriatedToolsForJobDef(tool, _jobDef)
+                    && !(tool.InUse)
+                    )
+                {
+                    Log.Message($"TYT: TYT_ToolMemoryTracker - SearchAppropriateTool --> Pawn {pawn.LabelShort} found the tool {tool.Label} for JobDef {_jobDef}");
+                    return TryEquipTool(pawn, tool as ThingWithComps);
+                }
+            }
             return false;
         }
 
