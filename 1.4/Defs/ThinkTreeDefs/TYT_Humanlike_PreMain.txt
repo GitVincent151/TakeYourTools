@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThinkTreeDef>
+        <defName>JobGiver_TakeYourTools</defName>
+        <insertTag>Humanlike_PreMain</insertTag>
+        <insertPriority>250</insertPriority>
+        <thinkRoot Class="TakeYourTools.TYT_JobGiver_TakeYourTools"/>
+    </ThinkTreeDef>
+</Defs>

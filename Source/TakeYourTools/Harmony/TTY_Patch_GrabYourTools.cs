@@ -40,7 +40,7 @@ namespace TakeYourTools
                         {
                             Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn.LabelShort} has been called for combat and will not take the tools");
                             // Restore the last previous tool
-                            ToolMemoryTracker.RestorePreviousEquippedTool(__pawn);
+                            //ToolMemoryTracker.RestorePreviousEquippedTool(__pawn);
                             return;
                         }
 
@@ -68,28 +68,30 @@ namespace TakeYourTools
                             && ToolMemoryTracker.HasAppropriatedToolsForJobDef((TYT_ToolThing)__pawn.equipment.Primary, __curJobDef)
                             )
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> {__pawn.LabelShort} has tool {__pawn.equipment.Primary.def} that is appropriate for {__curJobDef}");
+                            //Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> {__pawn.LabelShort} has tool {__pawn.equipment.Primary.def} that is appropriate for {__curJobDef}");
                         }
                         // Try and find something else in inventory
                         else if (
                             ToolMemoryTracker.EquipAppropriateTool(__pawn, __curJobDef)
                             )
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn.LabelShort} will be equipped with {__pawn.equipment.Primary}");
+                            //Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn.LabelShort} will be equipped with {__pawn.equipment.Primary}");
                         }
+                        // Check if an other tool is available on the map
                         else if (
                             ToolMemoryTracker.SearchAppropriateTool(__pawn, __curJobDef)
                             )
                         {
                             Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Pawn {__pawn.LabelShort} will search for a tool appropriate for {__curJobDef}");
+
                         }
-                        // Check if an other tool is available on the map
-                        // Vincent
+
                         // Restore the last previous tool
                         else
                         {
-                            Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Restore previous equipped tool {__pawn.LabelShort}");
-                            ToolMemoryTracker.RestorePreviousEquippedTool(__pawn);
+                            //Unequip or drop tool
+                            //Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> Restore previous equipped tool {__pawn.LabelShort}");
+                            //ToolMemoryTracker.RestorePreviousEquippedTool(__pawn);
                         }
                         // Log.Message($"TYT: TYT_Patch_Pawn_JobTracker_Patches - Pawn_JobTracker_StartJob --> End");
                     }

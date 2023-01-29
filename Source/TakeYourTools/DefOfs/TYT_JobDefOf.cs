@@ -7,7 +7,8 @@ namespace TakeYourTools
     public static class TYT_JobDefOf
     {
 
-        public static JobDef DropSurvivalTool;
+        public static JobDef DropTool;
+        public static JobDef TakeTool;
 
     }
 }

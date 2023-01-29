@@ -274,7 +274,7 @@ namespace TakeYourTools
                 pawn.jobs.jobQueue.EnqueueFirst(haulJob);
             }
 
-            return new Job(TYT_JobDefOf.DropSurvivalTool, tool);
+            return new Job(TYT_JobDefOf.DropTool, tool);
         }
         /*
         public static List<StatDef> AssignedToolRelevantWorkGiversStatDefs(this Pawn pawn)

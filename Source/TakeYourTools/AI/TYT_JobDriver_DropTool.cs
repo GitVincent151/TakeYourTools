@@ -4,7 +4,7 @@ using Verse.AI;
 
 namespace TakeYourTools
 {
-    public class TYT_JobDriver_DropSurvivalTool : JobDriver
+    public class TYT_JobDriver_DropTool : JobDriver
     {
 
         private const int DurationTicks = 30;

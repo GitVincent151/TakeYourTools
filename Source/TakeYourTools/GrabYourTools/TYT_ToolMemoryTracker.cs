@@ -5,7 +5,9 @@ using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
+using Verse.AI;
 using Verse.Sound;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.GridBrushBase;
 
 namespace TakeYourTools
@@ -14,6 +16,7 @@ namespace TakeYourTools
     {
         #region Properties
         private static List<TYT_ToolMemory> toolMemories = new List<TYT_ToolMemory>();
+
         #endregion
 
         #region Constructor
@@ -85,7 +88,7 @@ namespace TakeYourTools
             }
             return false;
         }
-
+        /*
         /// <summary>
         /// Restore previous equipped Thing
         /// </summary>
@@ -102,7 +105,27 @@ namespace TakeYourTools
                     toolMemory.ResetMemoryOfPawn();
             }
         }
+        */
+        
+        /// <summary>
+        /// Look if a tool is available in the inventory of the pawn that is appropriate for the JobDef 
+        /// </summary>
+        public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
+        {
+            if (pawn == null || _jobDef == null)
+                return false;
 
+            foreach (TYT_ToolThing tool in pawn.inventory.GetDirectlyHeldThings().Where(thing => thing.def.thingClass == typeof(TYT_ToolThing)).ToList().Cast<TYT_ToolThing>())
+            {
+                if (HasAppropriatedToolsForJobDef(tool, _jobDef))
+                {
+                    // Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool --> Pawn {pawn.LabelShort} takes tool {tool.Label} for JobDef {_jobDef}");
+                    return TryEquipTool(pawn, tool as ThingWithComps);
+                }
+            }
+            return false;
+        }
+        
         /// <summary>
         /// Check if the tool is appropriate for the JobDef
         /// </summary>
@@ -125,25 +148,6 @@ namespace TakeYourTools
         /// <summary>
         /// Look if a tool is available in the inventory of the pawn that is appropriate for the JobDef 
         /// </summary>
-        public bool EquipAppropriateTool(Pawn pawn, JobDef _jobDef)
-        {
-            if (pawn == null || _jobDef == null)
-                return false;
-
-            foreach (TYT_ToolThing tool in pawn.inventory.GetDirectlyHeldThings().Where(thing => thing.def.thingClass == typeof(TYT_ToolThing)).ToList().Cast<TYT_ToolThing>())
-            {
-                if (HasAppropriatedToolsForJobDef(tool, _jobDef))
-                {
-                    // Log.Message($"TYT: TYT_ToolMemoryTracker - EquipAppropriateTool --> Pawn {pawn.LabelShort} takes tool {tool.Label} for JobDef {_jobDef}");
-                    return TryEquipTool(pawn, tool as ThingWithComps);
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Look if a tool is available in the inventory of the pawn that is appropriate for the JobDef 
-        /// </summary>
         public bool SearchAppropriateTool(Pawn pawn, JobDef _jobDef)
         {
             if (pawn == null || _jobDef == null)
@@ -155,12 +159,21 @@ namespace TakeYourTools
             {
                 if (
                     HasAppropriatedToolsForJobDef(tool, _jobDef)
-                    && !(tool.InUse)
+                    //&& !(tool.InUse)
+                    && pawn.CanReserveAndReach(tool, PathEndMode.OnCell, Danger.None, 1, -1, null, false)
                     )
                 {
                     Log.Message($"TYT: TYT_ToolMemoryTracker - SearchAppropriateTool --> Pawn {pawn.LabelShort} found the tool {tool.Label} for JobDef {_jobDef}");
-                    return TryEquipTool(pawn, tool as ThingWithComps);
+
+                    Job jobNew = new Job(DefDatabase<JobDef>.GetNamed("TakeTool"), tool);
+                    pawn.Reserve(tool, jobNew, 1, -1, null);
+                    //pawn.jobs.jobQueue.EnqueueLast(jobNew);
+                    pawn.jobs.jobQueue.EnqueueFirst(jobNew);
+
+                    //return TryEquipTool(pawn, tool as ThingWithComps);
+                    return true;
                 }
+
             }
             return false;
         }
@@ -182,8 +195,8 @@ namespace TakeYourTools
 
             if (transferSuccess)
             {
-                TYT_ToolMemory toolMemory = GetMemory(pawn);
-                toolMemory.UpdatePreviousEquippedTool(currentTool);
+                //TYT_ToolMemory toolMemory = GetMemory(pawn);
+                //toolMemory.UpdatePreviousEquippedTool(currentTool);
                 if (tool.stackCount > 1)
                 {
                     tool = (ThingWithComps)tool.SplitOff(1);
@@ -196,7 +209,16 @@ namespace TakeYourTools
             }
             else
             {
-                Log.Warning($"TYT: TYT_ToolMemoryTracker - TryEquipTool --> Unable to transfer equipped tool for Pawn {pawn.Name} to inventory");
+                Log.Message($"TYT: TYT_ToolMemoryTracker - TryEquipTool --> Unable to transfer equipped tool for Pawn {pawn.Name} to inventory");
+
+                //if pawns are heavily encumbered, they need to haul.
+                if (MassUtility.EncumbrancePercent(pawn) >= 0.90f)
+                {
+                    Job haul = HaulAIUtility.HaulToStorageJob(pawn, currentTool);
+                    pawn.inventory.UnloadEverything = true;
+                    return true;
+                }
+                
             }
 
             return false;

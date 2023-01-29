@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<ThingDef Name="BaseTools" Abstract="True">
-		<!-- Inherits from ThingWithComps; properties are defined through the DefModExtension SurvivalToolProperties -->
+		<!-- Inherits from ThingWithComps; properties are defined through the DefModExtension TakeYourTools -->
 		<thingClass>TakeYourTools.TYT_ToolThing</thingClass>
 		<category>Item</category>
 		<drawerType>MapMeshOnly</drawerType>

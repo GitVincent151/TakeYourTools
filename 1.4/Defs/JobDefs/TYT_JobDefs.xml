@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>DropTool</defName>
+        <driverClass>TakeYourTools.TYT_JobDriver_DropTool</driverClass>
+        <reportString>dropping TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <JobDef>
+        <defName>TakeTool</defName>
+        <driverClass>TakeYourTools.TYT_JobDriver_TakeTool</driverClass>
+        <reportString>taking TargetA to inventory.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+</Defs>

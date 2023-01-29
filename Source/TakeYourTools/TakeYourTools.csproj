@@ -40,7 +40,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\TYT_JobDriver_DropSurvivalTool.cs" />
+    <Compile Include="AI\TYT_JobGiver_TakeTheTool.cs" />
+    <Compile Include="AI\TYT_JobDriver_DropTool.cs" />
+    <Compile Include="AI\TYT_JobDriver_TakeTool.cs" />
     <Compile Include="DefOfs\TYT_JobDefOf.cs" />
     <Compile Include="DefOfs\TYT_ModConceptDefOf.cs" />
     <Compile Include="DefOfs\TYT_ThingSetMakerDefOf.cs" />
